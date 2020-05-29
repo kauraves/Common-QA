@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import SignIn from './components/sign-in/sign-in.component';
 
-function App() {
-  return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { auth } from './firebase/firebase.utils';
+
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentUser: null,
+      user: '',
+    };
+  }
+
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      this.setState({ currentUser: user });
+      console.log(user);
+    });
+  }
+
+  render() {
+    return (
+      <div className='App'>
+        <h1>Hello</h1>
+        <p>Our fancy groupwork comes here</p>
+        <SignIn name='Niina' />
+      </div>
+    );
+  }
 }
 
 export default App;
