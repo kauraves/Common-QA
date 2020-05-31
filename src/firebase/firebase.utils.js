@@ -12,11 +12,13 @@ const config = {
   appId: '1:322844869603:web:9ee6a84a30373c6e7416d6',
 };
 
+firebase.initializeApp(config);
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
   const userRef = firestore.doc(`users/${userAuth.uid}`);
-  const snapShot = userRef.get();
+  const snapShot = await userRef.get();
   //this gives us also exists property that tells us whether the record exists in the database or not
   //console.log(snapShot);
 
@@ -43,8 +45,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   //console.log(userRef);
   return userRef;
 };
-
-firebase.initializeApp(config);
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

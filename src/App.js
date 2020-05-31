@@ -9,13 +9,13 @@ class App extends React.Component {
 
     this.state = {
       currentUser: null,
-      user: '',
     };
   }
 
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    console.log(this.state);
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -29,6 +29,7 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
+          console.log(this.state);
         });
       } else {
         this.setState({ currentUser: userAuth });
