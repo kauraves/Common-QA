@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
@@ -46,9 +46,11 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <Route exact path='/' component={HomePage} />
-        <Route exact path='/login' component={SignInAndSignUpPage} />
-        <button onClick={() => auth.signOut()}>Sign out</button>
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route exact path='/login' component={SignInAndSignUpPage} />
+          <button onClick={() => auth.signOut()}>Sign out</button>
+        </Switch>
       </div>
     );
   }
