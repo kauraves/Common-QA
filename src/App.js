@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import SignIn from './components/sign-in/sign-in.component';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
 class App extends React.Component {
   constructor() {
@@ -45,7 +45,7 @@ class App extends React.Component {
       <div className='App'>
         <h1>Hello</h1>
         <p>Our fancy groupwork comes here</p>
-        <SignIn name={this.state.currentUser} />
+        <SignInAndSignUpPage />
         <button onClick={() => auth.signOut()}>Sign out</button>
       </div>
     );

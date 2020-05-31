@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { signInWithGoogle } from '../../firebase/firebase.utils';
+
+import './sign-in.styles.css';
 
 class SignIn extends React.Component {
   constructor() {
@@ -37,6 +38,7 @@ class SignIn extends React.Component {
             label='email'
             required
           />
+          <label htmlFor='email'>Email</label>
           <input
             name='password'
             type='password'
@@ -45,6 +47,7 @@ class SignIn extends React.Component {
             label='password'
             required
           />
+          <label htmlFor='password'>Password</label>
           <div className='buttons'>
             <button type='submit'>Sign in</button>
             <button onClick={signInWithGoogle}>Sign in with Google</button>
