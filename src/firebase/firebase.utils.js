@@ -42,16 +42,12 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   // userRef returns all the user object references
   // i.e. userRef.id will return the id it is registered with
   // This id could be used to pull userdata from mongoDB
-  //console.log(userRef);
+
   return userRef;
 };
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
-
-//console.log(firestore.collection('users').doc('gdjs25Yb8IaZAEk8XwIK'));
-
-//console.log(firestore.doc('users').doc('gdjs25Yb8IaZAEk8XwIK'));
 
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });

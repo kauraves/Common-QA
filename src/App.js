@@ -1,7 +1,9 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+import HomePage from './pages/homepage/homepage.component';
 
 class App extends React.Component {
   constructor() {
@@ -44,9 +46,8 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
-        <h1>Hello</h1>
-        <p>Our fancy groupwork comes here</p>
-        <SignInAndSignUpPage />
+        <Route exact path='/' component={HomePage} />
+        <Route exact path='/login' component={SignInAndSignUpPage} />
         <button onClick={() => auth.signOut()}>Sign out</button>
       </div>
     );
