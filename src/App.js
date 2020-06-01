@@ -4,6 +4,7 @@ import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
+import Header from './components/header/header.component';
 
 class App extends React.Component {
   constructor() {
@@ -18,6 +19,7 @@ class App extends React.Component {
 
   componentDidMount() {
     console.log(this.state);
+
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -46,10 +48,13 @@ class App extends React.Component {
   render() {
     return (
       <div className='App'>
+        <Header currentUser={this.state.currentUser} />
+        {this.state.currentUser === null
+          ? 'Hey stranger'
+          : `Hey ${this.state.currentUser.displayName}`}
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/login' component={SignInAndSignUpPage} />
-          <button onClick={() => auth.signOut()}>Sign out</button>
         </Switch>
       </div>
     );
