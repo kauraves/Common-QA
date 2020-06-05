@@ -19,7 +19,7 @@ const editUser = async (props) => {
   console.log(props);
 
   const userRef = firestore.doc(`users/${props}`);
-  const snapShot = await userRef.get();
+  await userRef.get();
   try {
     await userRef.set(
       {
@@ -38,9 +38,13 @@ export const findUserProfileDocument = async (email) => {
   const userRef = await firestore
     .collection(`users`)
     .where('email', '==', email);
-  const snapShot = await userRef.get().then(function (docs) {
-    uid = docs.docs[0].id;
-    editUser(uid);
+
+  await userRef.get().then(function (docs) {
+    if (!docs.empty) {
+      //console.log(docs);
+      uid = docs.docs[0].id;
+      editUser(uid);
+    } else console.log('No such user');
   });
 };
 
