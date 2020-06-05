@@ -1,10 +1,11 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
-import Header from './components/header/header.component';
+import ProfilePage from './pages/profile/profile.component';
 
 class App extends React.Component {
   constructor() {
@@ -18,13 +19,13 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    console.log(this.state);
-
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
+        console.log(userAuth);
         const userRef = await createUserProfileDocument(userAuth);
+
         // this will LISTEN to the userRef AND get back first state of that data
         userRef.onSnapshot((snapShot) => {
           this.setState({
@@ -33,7 +34,6 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
-          console.log(this.state);
         });
       } else {
         this.setState({ currentUser: userAuth });
@@ -52,10 +52,24 @@ class App extends React.Component {
         {this.state.currentUser === null
           ? 'Hey stranger'
           : `Hey ${this.state.currentUser.displayName}`}
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route exact path='/login' component={SignInAndSignUpPage} />
-        </Switch>
+        <div class='content'>
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route exact path='/login' component={SignInAndSignUpPage} />
+
+            <Route
+              exact
+              path='/profile'
+              render={() =>
+                this.state.currentUser ? (
+                  <Redirect to='/profile' />
+                ) : (
+                  <Redirect to='/login' />
+                )
+              }
+            />
+          </Switch>
+        </div>
       </div>
     );
   }

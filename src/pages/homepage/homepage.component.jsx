@@ -83,6 +83,7 @@ class HomePage extends React.Component {
       </tr>
       );
 
+
     return (
       <div className='homepage'>
         <h1>Hello</h1>
@@ -102,5 +103,6 @@ class HomePage extends React.Component {
     );
   }
 }
+
 
 export default HomePage;

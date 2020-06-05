@@ -23,7 +23,7 @@ label {
   font-size: 16px;
 }
 
-button {
+.content button {
   min-width: 165px;
   width: auto;
   height: 50px;
