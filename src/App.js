@@ -1,10 +1,11 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
-import Header from './components/header/header.component';
+import ProfilePage from './pages/profile/profile.component';
 
 class App extends React.Component {
   constructor() {
@@ -55,6 +56,18 @@ class App extends React.Component {
           <Switch>
             <Route exact path='/' component={HomePage} />
             <Route exact path='/login' component={SignInAndSignUpPage} />
+
+            <Route
+              exact
+              path='/profile'
+              render={() =>
+                this.state.currentUser ? (
+                  <Redirect to='/profile' />
+                ) : (
+                  <Redirect to='/login' />
+                )
+              }
+            />
           </Switch>
         </div>
       </div>

@@ -11,11 +11,11 @@ const Header = ({ currentUser }) => (
     </Link>
     <div className='options'>
       <Link className='option' to='/'>
-        CATEGORIES{' '}
+        HOME{' '}
       </Link>
       {currentUser ? (
         <React.Fragment>
-          <Link className='option' to='/'>
+          <Link className='option' to='/profile'>
             YOUR PROFILE
           </Link>
           <Link to='/' className='option' onClick={() => auth.signOut()}>
