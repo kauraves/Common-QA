@@ -14,6 +14,36 @@ const config = {
 
 firebase.initializeApp(config);
 
+const editUser = async (props) => {
+  console.log('jeehee', props);
+  console.log(props);
+
+  const userRef = firestore.doc(`users/${props}`);
+  const snapShot = await userRef.get();
+  try {
+    await userRef.set(
+      {
+        isAdmin: true,
+      },
+      { merge: true }
+    );
+    console.log('User updated');
+  } catch (error) {
+    console.log('Error updating user', error.message);
+  }
+};
+
+export const findUserProfileDocument = async (email) => {
+  let uid = '';
+  const userRef = await firestore
+    .collection(`users`)
+    .where('email', '==', email);
+  const snapShot = await userRef.get().then(function (docs) {
+    uid = docs.docs[0].id;
+    editUser(uid);
+  });
+};
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 

@@ -74,17 +74,7 @@ class App extends React.Component {
                 )
               }
             />
-            <Route
-              exact
-              path='/profile'
-              render={() =>
-                this.state.currentUser ? (
-                  <ProfilePage role={this.state.currentUser.isAdmin} />
-                ) : (
-                  <Redirect to='/login' />
-                )
-              }
-            />
+            <Route exact path='/profile' render={() => <ProfilePage />} />
             <Route exact path='/test' component={test} />
           </Switch>
         </div>
