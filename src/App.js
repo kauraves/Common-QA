@@ -52,7 +52,7 @@ class App extends React.Component {
         {this.state.currentUser === null
           ? 'Hey stranger'
           : `Hey ${this.state.currentUser.displayName}`}
-        <div class='content'>
+        <div className='content'>
           <Switch>
             <Route exact path='/' component={HomePage} />
             <Route exact path='/login' component={SignInAndSignUpPage} />
