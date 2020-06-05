@@ -17,11 +17,10 @@ firebase.initializeApp(config);
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
+  // This should get replaced with the one for MongoDB
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get();
   //this gives us also exists property that tells us whether the record exists in the database or not
-  //console.log(snapShot);
-
   // if there is no data based on uid, create new user
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;
@@ -32,6 +31,8 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
+        // each user is set to normal user by default. Admin status in admin panel
+        isAdmin: false,
         ...additionalData,
       });
     } catch (error) {

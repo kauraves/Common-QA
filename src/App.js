@@ -18,13 +18,13 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    console.log(this.state);
-
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
+        console.log(userAuth);
         const userRef = await createUserProfileDocument(userAuth);
+
         // this will LISTEN to the userRef AND get back first state of that data
         userRef.onSnapshot((snapShot) => {
           this.setState({
@@ -33,7 +33,6 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
-          console.log(this.state);
         });
       } else {
         this.setState({ currentUser: userAuth });
@@ -52,10 +51,12 @@ class App extends React.Component {
         {this.state.currentUser === null
           ? 'Hey stranger'
           : `Hey ${this.state.currentUser.displayName}`}
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route exact path='/login' component={SignInAndSignUpPage} />
-        </Switch>
+        <div class='content'>
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route exact path='/login' component={SignInAndSignUpPage} />
+          </Switch>
+        </div>
       </div>
     );
   }
