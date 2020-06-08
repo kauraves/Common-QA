@@ -27,7 +27,6 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    // console.log(this.props);
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -36,7 +35,6 @@ class App extends React.Component {
 
         // this will LISTEN to the userRef AND get back first state of that data
         userRef.onSnapshot((snapShot) => {
-          // console.log(snapShot.data());
           this.setState({
             currentUser: {
               id: snapShot.id,

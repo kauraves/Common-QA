@@ -1,5 +1,8 @@
 import React from 'react';
-import { findUserProfileDocument } from '../../firebase/firebase.utils';
+import {
+  findUserProfileDocument,
+  showUserDocument,
+} from '../../firebase/firebase.utils';
 
 class EditUsers extends React.Component {
   constructor() {
@@ -7,17 +10,32 @@ class EditUsers extends React.Component {
 
     this.state = {
       userEmail: '',
-      userDetails: '',
       userUid: '',
     };
   }
 
   findUser = async (event) => {
     event.preventDefault();
-    console.log(this.state.userEmail);
-    let uid = await findUserProfileDocument(this.state.userEmail);
+    let userUid = await findUserProfileDocument(this.state.userEmail);
+    //
+    if (!userUid.empty) {
+      await this.setState({ userUid: userUid.docs[0].id });
+
+      let userData = await showUserDocument(this.state.userUid);
+      await this.setState({ ...userData });
+    } else {
+      this.setState({ userEmail: '' });
+      console.log('Nothing to see in here');
+    }
+
+    await console.log(this.state);
+    //await console.log('yay', userData);
+
+    // await console.log('yay', this.state); //console.log(userData.docs[0].id); //this.setState({ userName: userData }, console.log(this.state));
+    //await console.log(this.state);
+    //await console.log('Userdata: ', userData);
     // await console.log(uid);
-    await this.setState({ userUid: uid }, console.log(this.state.userUid));
+    //await this.setState({ userUid: uid }, console.log(this.state.userUid));
     //await console.log(this.state.userUid);
     //this.editUser(userUID)
   };

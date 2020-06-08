@@ -13,49 +13,74 @@ const config = {
 };
 
 firebase.initializeApp(config);
+var db = firebase.firestore();
 
-const editUser = async (props) => {
-  console.log('jeehee', props);
-  console.log(props);
+// const editUser = async (props) => {
+//   console.log('jeehee', props);
+//   console.log(props);
 
-  const userRef = firestore.doc(`users/${props}`);
-  await userRef.get();
-  try {
-    await userRef.set(
-      {
-        isAdmin: true,
-      },
-      { merge: true }
-    );
-    console.log('User updated');
-  } catch (error) {
-    console.log('Error updating user', error.message);
-  }
+//   // Find the user with the given uid (props)
+//   const userRef = firestore.doc(`users/${props}`);
+//   const snapShot = userRef.get().then(function (docs) {
+//     console.log(docs);
+//   });
+
+//   //console.log(userRef);
+//   //await userRef.get();
+//   // try {
+//   //   await userRef.set(
+//   //     {
+//   //       isAdmin: true,
+//   //     },
+//   //     { merge: true }
+//   //   );
+//   //   console.log('User updated');
+//   // } catch (error) {
+//   //   console.log('Error updating user', error.message);
+//   // }
+// };
+
+export const showUserDocument = async (props) => {
+  // Uid comes in as props, now we get the document with that uid
+  let data = '';
+  await db
+    .collection('users')
+    .doc(props)
+    .get()
+    .then(async function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+        console.log(data);
+      } else {
+        console.log('No such data');
+      }
+    });
+  await console.log(data);
+  return data;
 };
 
 export const findUserProfileDocument = async (email) => {
-  let uid = '';
-  const userRef = await firestore
+  let data = '';
+  await firestore
     .collection(`users`)
-    .where('email', '==', email);
-
-  await userRef.get().then(function (docs) {
-    if (!docs.empty) {
-      //console.log(docs);
-      uid = docs.docs[0].id;
-      editUser(uid);
-    } else console.log('No such user');
-  });
+    .where('email', '==', email)
+    .get()
+    .then(function (doc) {
+      if (doc) {
+        data = doc;
+      } else console.log('No such user');
+    });
+  return data;
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
-  // This should get replaced with the one for MongoDB
+  // This gives us also exists property that tells us whether the record exists in the database or not
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   const snapShot = await userRef.get();
-  //this gives us also exists property that tells us whether the record exists in the database or not
-  // if there is no data based on uid, create new user
+
+  // If there is no data based on uid, create new user
   if (!snapShot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -65,7 +90,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        // each user is set to normal user by default. Admin status in admin panel
+        // Each user is set to normal user by default. Admin status in admin panel
         isAdmin: false,
         ...additionalData,
       });
@@ -73,19 +98,14 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
       console.log('Error creating user', error.message);
     }
   }
-  // now this has registered the user to firebase based on the uid
-  // userRef returns all the user object references
-  // i.e. userRef.id will return the id it is registered with
-  // This id could be used to pull userdata from mongoDB
-
   return userRef;
 };
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
+// Standard set for Google Auth from Firebase (with a prompt)
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
-
 export default firebase;
