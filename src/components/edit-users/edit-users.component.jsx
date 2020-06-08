@@ -5,6 +5,11 @@ import {
   editUser,
 } from '../../firebase/firebase.utils';
 
+export const Test = (props) => {
+  console.log(props);
+  return <div>Hello {props}</div>;
+};
+
 class EditUsers extends React.Component {
   constructor() {
     super();
@@ -12,11 +17,12 @@ class EditUsers extends React.Component {
     this.state = {
       userEmail: '',
       userUid: '',
+      statusFound: false,
     };
   }
 
-  findUser = async (event) => {
-    event.preventDefault();
+  findUser = async () => {
+    // event.preventDefault();
     let userUid = await findUserProfileDocument(this.state.userEmail);
     //
     if (!userUid.empty) {
@@ -24,12 +30,15 @@ class EditUsers extends React.Component {
 
       let userData = await showUserDocument(this.state.userUid);
       await this.setState({ ...userData });
+      await this.setState({ statusFound: true });
     } else {
       this.setState({ userEmail: '' });
       console.log('Nothing to see in here');
     }
 
     await console.log(this.state);
+
+    //return <Test content={this.state.isAdmin} />;
     //await console.log('yay', userData);
 
     // await console.log('yay', this.state); //console.log(userData.docs[0].id); //this.setState({ userName: userData }, console.log(this.state));
@@ -41,13 +50,24 @@ class EditUsers extends React.Component {
     //this.editUser(userUID)
   };
 
-  changeAdminStatus = () => {
-    console.log(this.state.isAdmin);
+  changeAdminStatus = async () => {
+    //console.log(this.state.isAdmin);
+    //await this.setState({ statusFound: true });
     if (this.state.userUid) {
-      this.setState({
+      await this.setState({
         isAdmin: editUser(this.state.userUid, this.state.isAdmin),
       });
+      this.findUser();
+      //await console.log(this.state.isAdmin);
     }
+    // if (this.state.isAdmin) {
+    //   await this.setState({ userStatus: 'Admin' });
+    //   await console.log(this.state.userStatus);
+    // } else {
+    //   await this.setState({ userStatus: 'User' });
+    //   await console.log(this.state.userStatus);
+    // }
+    //await this.setState({ statusFound: false });
   };
 
   handleChange = (event) => {
@@ -70,6 +90,16 @@ class EditUsers extends React.Component {
   // };
 
   render() {
+    let status = null;
+
+    if (this.state.statusFound) {
+      if (this.state.isAdmin) {
+        status = <div>Hello admin</div>;
+      } else {
+        status = <div>Hello user</div>;
+      }
+    }
+
     return (
       <div className='edit-users'>
         <h3>Edit users</h3>
@@ -82,10 +112,12 @@ class EditUsers extends React.Component {
             onChange={this.handleChange}
             label='email'
             required></input>
-
-          <button type='submit'>Find user</button>
         </form>
+        <button onClick={() => this.findUser()} type='submit'>
+          Find user
+        </button>
         <div>
+          {status}
           <button onClick={this.changeAdminStatus}>
             EDIT FOUND USERS ADMIN status
           </button>
