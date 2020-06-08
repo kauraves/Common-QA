@@ -40,6 +40,10 @@ class EditUsers extends React.Component {
     //this.editUser(userUID)
   };
 
+  changeAdminStatus = () => {
+    console.log(this.state.isAdmin);
+  };
+
   handleChange = (event) => {
     const { value, name } = event.target;
     this.setState({ [name]: value });
@@ -61,6 +65,9 @@ class EditUsers extends React.Component {
 
           <button type='submit'>Find user</button>
         </form>
+        <button onClick={this.changeAdminStatus}>
+          EDIT FOUND USERS ADMIN status
+        </button>
       </div>
     );
   }
