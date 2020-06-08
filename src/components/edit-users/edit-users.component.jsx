@@ -2,6 +2,7 @@ import React from 'react';
 import {
   findUserProfileDocument,
   showUserDocument,
+  editUser,
 } from '../../firebase/firebase.utils';
 
 class EditUsers extends React.Component {
@@ -42,12 +43,31 @@ class EditUsers extends React.Component {
 
   changeAdminStatus = () => {
     console.log(this.state.isAdmin);
+    if (this.state.userUid) {
+      this.setState({
+        isAdmin: editUser(this.state.userUid, this.state.isAdmin),
+      });
+    }
   };
 
   handleChange = (event) => {
     const { value, name } = event.target;
     this.setState({ [name]: value });
   };
+
+  // getStatus = () => {
+  //   let status = null;
+
+  //   if (this.state.userUid) {
+  //     // How to force re-render to this?
+  //     status = (
+  //       <div>This users status is: {this.state.isAdmin ? 'Admin' : 'User'}</div>
+  //     );
+  //   } else {
+  //     status = null;
+  //   }
+  //   return status;
+  // };
 
   render() {
     return (
@@ -65,9 +85,11 @@ class EditUsers extends React.Component {
 
           <button type='submit'>Find user</button>
         </form>
-        <button onClick={this.changeAdminStatus}>
-          EDIT FOUND USERS ADMIN status
-        </button>
+        <div>
+          <button onClick={this.changeAdminStatus}>
+            EDIT FOUND USERS ADMIN status
+          </button>
+        </div>
       </div>
     );
   }

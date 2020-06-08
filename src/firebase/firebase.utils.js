@@ -15,30 +15,42 @@ const config = {
 firebase.initializeApp(config);
 var db = firebase.firestore();
 
-// const editUser = async (props) => {
-//   console.log('jeehee', props);
-//   console.log(props);
+export const editUser = async (uid, isAdmin) => {
+  // Find the user with the given uid (props)
+  const userRef = firestore.doc(`users/${uid}`);
+  console.log(userRef);
+  try {
+    if (isAdmin) {
+      console.log('is already admin');
+      console.log(userRef);
+      await userRef.set(
+        {
+          isAdmin: false,
+        },
+        { merge: true }
+      );
+      console.log('User updated, admin status removed');
+      return false;
+    } else {
+      await userRef.set(
+        {
+          isAdmin: true,
+        },
+        { merge: true }
+      );
+      console.log(userRef);
+      console.log('User has been given an admin status.');
+      return true;
+    }
+  } catch (error) {
+    console.log('Error updating user', error.message);
+  }
+};
+//);
 
-//   // Find the user with the given uid (props)
-//   const userRef = firestore.doc(`users/${props}`);
-//   const snapShot = userRef.get().then(function (docs) {
-//     console.log(docs);
-//   });
-
-//   //console.log(userRef);
-//   //await userRef.get();
-//   // try {
-//   //   await userRef.set(
-//   //     {
-//   //       isAdmin: true,
-//   //     },
-//   //     { merge: true }
-//   //   );
-//   //   console.log('User updated');
-//   // } catch (error) {
-//   //   console.log('Error updating user', error.message);
-//   // }
-// };
+// console.log(userRef);
+// await userRef.get();
+//};
 
 export const showUserDocument = async (props) => {
   // Uid comes in as props, now we get the document with that uid
