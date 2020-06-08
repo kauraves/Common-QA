@@ -1,5 +1,6 @@
 import React from 'react';
 import { auth, signInWithGoogle } from '../../firebase/firebase.utils';
+import { withRouter } from 'react-router-dom';
 
 import './sign-in.styles.css';
 
@@ -21,6 +22,7 @@ class SignIn extends React.Component {
 
     try {
       await auth.signInWithEmailAndPassword(email, password);
+      // this.props.history.push('/profile');
       this.setState({ email: '', password: '' });
     } catch (error) {
       console.log(error);
@@ -35,7 +37,7 @@ class SignIn extends React.Component {
   render() {
     return (
       <div className='sign-in'>
-        <h2 className='title'>I already have an account</h2>
+        <h3 className='title'>I already have an account</h3>
         <span>Sign in with your email and password</span>
         <form onSubmit={this.handleSubmit}>
           <input
@@ -68,4 +70,4 @@ class SignIn extends React.Component {
   }
 }
 
-export default SignIn;
+export default withRouter(SignIn);
