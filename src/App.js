@@ -73,7 +73,7 @@ class App extends React.Component {
                 )
               }
             />
-            <Route exact path='/profile' render={() => <ProfilePage />} />
+            <Route exact path='/profile' render={() => <ProfilePage currentUser={this.state.currentUser} />} />
             <Route exact path='/test' component={test} />
             <Route
               exact
