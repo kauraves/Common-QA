@@ -13,6 +13,14 @@ const Header = ({ currentUser }) => (
       <Link className='option' to='/'>
         HOME{' '}
       </Link>
+      {console.log(currentUser)}
+      {currentUser !== null && currentUser.isAdmin ? (
+        <React.Fragment>
+          <Link to='/admin' className='option'>
+            ADMIN
+          </Link>
+        </React.Fragment>
+      ) : null}
       {currentUser ? (
         <React.Fragment>
           <Link className='option' to='/profile'>
@@ -31,5 +39,4 @@ const Header = ({ currentUser }) => (
     </div>
   </div>
 );
-
 export default Header;

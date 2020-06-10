@@ -6,6 +6,7 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
 import ProfilePage from './pages/profile/profile.component';
+import AdminPage from './pages/admin/adminpage.component';
 
 const test = (props) => {
   return (
@@ -20,13 +21,13 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      currentUser: null,
+      currentUser: '',
     };
   }
 
   unsubscribeFromAuth = null;
 
-  componentDidMount() {
+  componentWillMount() {
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -41,7 +42,7 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
-          // console.log(this.state.currentUser.isAdmin);
+          console.log(this.state.currentUser);
         });
       } else {
         this.setState({ currentUser: userAuth });
@@ -74,6 +75,17 @@ class App extends React.Component {
             />
             <Route exact path='/profile' render={() => <ProfilePage />} />
             <Route exact path='/test' component={test} />
+            <Route
+              exact
+              path='/admin'
+              render={() =>
+                this.state.currentUser.isAdmin ? (
+                  <AdminPage />
+                ) : (
+                  <Redirect to='/' />
+                )
+              }
+            />
           </Switch>
         </div>
       </div>

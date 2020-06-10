@@ -13,6 +13,8 @@ const config = {
 };
 
 firebase.initializeApp(config);
+//app.auth().setPersistence(app.auth.Auth.Persistence.SESSION);
+
 var db = firebase.firestore();
 
 export const editUser = async (uid, isAdmin) => {
@@ -116,8 +118,25 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-// Standard set for Google Auth from Firebase (with a prompt)
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+// // Standard set for Google Auth from Firebase (with a prompt) (old way)
+// const provider = new firebase.auth.GoogleAuthProvider();
+// provider.setCustomParameters({ prompt: 'select_account' });
+// export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
+export const signInWithGoogle = () =>
+  firebase
+    .auth()
+    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(function () {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      return firebase.auth().signInWithPopup(provider);
+    })
+    .catch(function (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      return console.log('There was an error', errorCode, ' :', errorMessage);
+    });
+
 export default firebase;
