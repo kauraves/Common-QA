@@ -1,5 +1,7 @@
 import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
+import Table from 'react-bootstrap/Table';
+import Votes from '../votes/votes.component';
 
 class QuestionSummary extends React.Component {
   constructor(props) {
@@ -70,17 +72,18 @@ class QuestionSummary extends React.Component {
     return (
       <div>
         {this.state.data.map((item) => (
-          <div key={item.post_id}>
+          <div className='post' key={item.post_id}>
             <h4
               className='question-title'
               onClick={() => this.goToQuestion(item.post_id)}>
-              {item.title}
+              <a href={item.post_id}>{item.title}</a>
             </h4>
             <p>{item.body.substr(1, 250)}</p>
             <p>
               Asked by: {item.author_name} at{' '}
               {this.getDateAndTime(item.created_at.seconds)}
             </p>
+            <hr />
           </div>
         ))}
       </div>
