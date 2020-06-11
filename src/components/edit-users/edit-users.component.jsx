@@ -19,6 +19,7 @@ class EditUsers extends React.Component {
 
   findUser = async (e) => {
     e.preventDefault();
+
     let userUid = await findUserProfileDocument(this.state.userEmail);
     if (!userUid.empty) {
       await this.setState({ userUid: userUid.docs[0].id });
@@ -39,6 +40,7 @@ class EditUsers extends React.Component {
       await this.setState({
         isAdmin: editUser(this.state.userUid, this.state.userData.isAdmin),
       });
+
       this.findUser(e);
     }
   };
@@ -49,21 +51,11 @@ class EditUsers extends React.Component {
   };
 
   render() {
-    let status = null;
-
-    if (this.state.statusFound) {
-      if (this.state.isAdmin) {
-        status = <div>Hello admin</div>;
-      } else {
-        status = <div>Hello user</div>;
-      }
-    }
-
     return (
       <div className='edit-users'>
         <h3>Edit users</h3>
         <p>Find user by email:</p>
-        <form onSubmit={(e) => this.findUser(e)}>
+        <form onSubmit={(e) => this.findUser(e, true)}>
           <input
             type='text'
             name='userEmail'
@@ -76,7 +68,7 @@ class EditUsers extends React.Component {
 
         <div>
           {this.state.userData.isAdmin ? 'admin' : 'user'}
-          {status}
+
           <button onClick={this.changeAdminStatus}>
             EDIT FOUND USERS ADMIN status
           </button>

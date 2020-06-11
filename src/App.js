@@ -27,7 +27,7 @@ class App extends React.Component {
 
   unsubscribeFromAuth = null;
 
-  componentWillMount() {
+  componentDidMount() {
     // open messaging system between our App and firebase
     // open subscription
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -73,7 +73,13 @@ class App extends React.Component {
                 )
               }
             />
-            <Route exact path='/profile' render={() => <ProfilePage />} />
+            <Route
+              exact
+              path='/profile'
+              render={() => (
+                <ProfilePage role={this.state.currentUser.isAdmin} />
+              )}
+            />
             <Route exact path='/test' component={test} />
             <Route
               exact
