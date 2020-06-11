@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+
 import 'firebase/firestore';
 
 const config = {
@@ -13,32 +14,40 @@ const config = {
 };
 
 firebase.initializeApp(config);
+
 var db = firebase.firestore();
 
-// const editUser = async (props) => {
-//   console.log('jeehee', props);
-//   console.log(props);
-
-//   // Find the user with the given uid (props)
-//   const userRef = firestore.doc(`users/${props}`);
-//   const snapShot = userRef.get().then(function (docs) {
-//     console.log(docs);
-//   });
-
-//   //console.log(userRef);
-//   //await userRef.get();
-//   // try {
-//   //   await userRef.set(
-//   //     {
-//   //       isAdmin: true,
-//   //     },
-//   //     { merge: true }
-//   //   );
-//   //   console.log('User updated');
-//   // } catch (error) {
-//   //   console.log('Error updating user', error.message);
-//   // }
-// };
+export const editUser = async (uid, isAdmin) => {
+  // Find the user with the given uid (props)
+  const userRef = firestore.doc(`users/${uid}`);
+  console.log(userRef);
+  try {
+    if (isAdmin) {
+      console.log('is already admin');
+      console.log(userRef);
+      await userRef.set(
+        {
+          isAdmin: false,
+        },
+        { merge: true }
+      );
+      console.log('User updated, admin status removed');
+      return false;
+    } else {
+      await userRef.set(
+        {
+          isAdmin: true,
+        },
+        { merge: true }
+      );
+      console.log(userRef);
+      console.log('User has been given an admin status.');
+      return true;
+    }
+  } catch (error) {
+    console.log('Error updating user', error.message);
+  }
+};
 
 export const showUserDocument = async (props) => {
   // Uid comes in as props, now we get the document with that uid
@@ -73,6 +82,40 @@ export const findUserProfileDocument = async (email) => {
   return data;
 };
 
+export const getAllQuestions = async () => {
+  let data = [];
+  await firebase
+    .firestore()
+    .collection('questions')
+    .get()
+    .then(function (doc) {
+      doc.forEach((item) => {
+        getQuestionData(item.id).then(function (result) {
+          data.push({ post_id: item.id, ...result });
+        });
+      });
+    });
+
+  return data;
+};
+
+export const getQuestionData = async (id) => {
+  let data = [];
+  await db
+    .collection('questions')
+    .doc(id)
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+      } else {
+        console.log('No such data');
+      }
+    });
+
+  return data;
+};
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 
@@ -104,8 +147,25 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
-// Standard set for Google Auth from Firebase (with a prompt)
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account' });
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+// // Standard set for Google Auth from Firebase (with a prompt) (old way)
+// const provider = new firebase.auth.GoogleAuthProvider();
+// provider.setCustomParameters({ prompt: 'select_account' });
+// export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
+export const signInWithGoogle = () =>
+  firebase
+    .auth()
+    .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(function () {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      return firebase.auth().signInWithPopup(provider);
+    })
+    .catch(function (error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      return console.log('There was an error', errorCode, ' :', errorMessage);
+    });
+
 export default firebase;

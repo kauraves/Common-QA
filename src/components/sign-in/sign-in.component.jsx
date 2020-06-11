@@ -21,9 +21,26 @@ class SignIn extends React.Component {
     const { email, password } = this.state;
 
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      // this.props.history.push('/profile');
-      this.setState({ email: '', password: '' });
+      auth()
+        .setPersistence(auth.Auth.Persistence.SESSION)
+        .then(function () {
+          return auth().signInWithEmailAndPassword(email, password);
+        })
+        .catch(function (error) {
+          let errorCode = error.code;
+          let errorMessage = error.message;
+
+          return console.log(
+            'Response: error code ',
+            errorCode,
+            '. Error message: ',
+            errorMessage
+          );
+        });
+      // old way
+      //   await auth.signInWithEmailAndPassword(email, password);
+      //   // this.props.history.push('/profile');
+      //   this.setState({ email: '', password: '' });
     } catch (error) {
       console.log(error);
     }
