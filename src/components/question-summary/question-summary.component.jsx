@@ -2,25 +2,27 @@ import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
 
 class QuestionSummary extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      questions: [],
       data: [],
     };
   }
 
-  async componentWillMount() {
-    let data = await getAllQuestions();
-    this.setState({ data: data });
-    await console.log(this.state.data);
+  componentDidMount() {
+    this.getQuestions();
   }
 
-  componentDidMount() {
-    //  console.log(this.state);
-    //let day = 1591218000;
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  getQuestions = async () => {
+    let data = await getAllQuestions();
+    await this.sleep(200);
+    await this.setState({ data: data });
+  };
 
   goToQuestion(questionID) {
     console.log('This moves you to the questionID: ' + questionID);
@@ -34,21 +36,51 @@ class QuestionSummary extends React.Component {
     console.log('This downvotes questionID: ' + questionID);
   }
 
+  getDateAndTime(seconds) {
+    let ParsedDate = new Date(seconds * 1000);
+    ParsedDate =
+      ParsedDate.getDate() +
+      '.' +
+      (ParsedDate.getMonth() + 1) +
+      '.' +
+      ParsedDate.getFullYear() +
+      ' : ' +
+      ParsedDate.getHours() +
+      ':' +
+      ParsedDate.getMinutes() +
+      ':' +
+      ParsedDate.getSeconds();
+    return ParsedDate;
+  }
+
+  getDate(date) {
+    let ParsedDate = new Date(date);
+    ParsedDate =
+      ParsedDate.getDate() +
+      '.' +
+      (ParsedDate.getMonth() + 1) +
+      '.' +
+      ParsedDate.getFullYear();
+    return ParsedDate;
+  }
+
   render() {
-    let day = new Date(1591218000 * 1000);
-    console.log(day);
+    //console.log('State in render for data:', this.state.data);
 
     return (
       <div>
         {this.state.data.map((item) => (
-          <div>
+          <div key={item.post_id}>
             <h4
               className='question-title'
-              onClick={() => this.goToQuestion(item.title)}>
+              onClick={() => this.goToQuestion(item.post_id)}>
               {item.title}
             </h4>
-            <p>{item.body}</p>
-            <p>Asked by: {item.author_name} </p>
+            <p>{item.body.substr(1, 250)}</p>
+            <p>
+              Asked by: {item.author_name} at{' '}
+              {this.getDateAndTime(item.created_at.seconds)}
+            </p>
           </div>
         ))}
       </div>

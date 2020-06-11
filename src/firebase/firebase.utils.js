@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+
 import 'firebase/firestore';
 
 const config = {
@@ -13,7 +14,6 @@ const config = {
 };
 
 firebase.initializeApp(config);
-//app.auth().setPersistence(app.auth.Auth.Persistence.SESSION);
 
 var db = firebase.firestore();
 
@@ -48,11 +48,6 @@ export const editUser = async (uid, isAdmin) => {
     console.log('Error updating user', error.message);
   }
 };
-//);
-
-// console.log(userRef);
-// await userRef.get();
-//};
 
 export const showUserDocument = async (props) => {
   // Uid comes in as props, now we get the document with that uid
@@ -88,10 +83,37 @@ export const findUserProfileDocument = async (email) => {
 };
 
 export const getAllQuestions = async () => {
-  const snapshot = await firebase.firestore().collection('questions').get();
-  //console.log(snapshot.docs.map((doc) => doc.data()));
-  return snapshot.docs.map((doc) => doc.data());
-  //return snapshot.docs.map((doc) => doc.data());
+  let data = [];
+  await firebase
+    .firestore()
+    .collection('questions')
+    .get()
+    .then(function (doc) {
+      doc.forEach((item) => {
+        getQuestionData(item.id).then(function (result) {
+          data.push({ post_id: item.id, ...result });
+        });
+      });
+    });
+
+  return data;
+};
+
+export const getQuestionData = async (id) => {
+  let data = [];
+  await db
+    .collection('questions')
+    .doc(id)
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+      } else {
+        console.log('No such data');
+      }
+    });
+
+  return data;
 };
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
