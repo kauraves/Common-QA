@@ -13,7 +13,7 @@ const Header = ({ currentUser }) => (
       <Link className='option' to='/'>
         HOME{' '}
       </Link>
-      {console.log(currentUser)}
+
       {currentUser !== null && currentUser.isAdmin ? (
         <React.Fragment>
           <Link to='/admin' className='option'>
@@ -33,7 +33,6 @@ const Header = ({ currentUser }) => (
       ) : (
         <Link className='option' to='/login'>
           SIGN IN
-          {console.log(currentUser)}
         </Link>
       )}
     </div>

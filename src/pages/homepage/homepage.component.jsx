@@ -72,39 +72,9 @@ class HomePage extends React.Component {
   }
 
   render() {
-    let questionItems = this.state.list.map((questionItem) => (
-      <tr>
-        <td>
-          <Votes
-            votes={questionItem.votes}
-            questionID={questionItem.questionID}
-            upvoteQuestion={this.upvoteQuestion}
-            downvoteQuestion={this.downvoteQuestion}
-          />
-        </td>
-        <td>
-          <QuestionSummary
-            question={questionItem.questionTitle}
-            questionID={questionItem.questionID}
-            textBlock={questionItem.questionText}
-            goToQuestion={this.gotToQuestion}
-          />
-        </td>
-      </tr>
-    ));
-
     return (
       <div className='homepage'>
-        <h1>All questions</h1>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Questions</th>
-            </tr>
-          </thead>
-          <tbody>{questionItems}</tbody>
-        </Table>
+        <QuestionSummary />
       </div>
     );
   }

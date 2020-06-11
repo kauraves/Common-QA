@@ -87,6 +87,13 @@ export const findUserProfileDocument = async (email) => {
   return data;
 };
 
+export const getAllQuestions = async () => {
+  const snapshot = await firebase.firestore().collection('questions').get();
+  //console.log(snapshot.docs.map((doc) => doc.data()));
+  return snapshot.docs.map((doc) => doc.data());
+  //return snapshot.docs.map((doc) => doc.data());
+};
+
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return;
 

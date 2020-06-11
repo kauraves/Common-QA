@@ -1,0 +1,114 @@
+{
+  "categories": ["Programming", "Sports", "Travelling"],
+  "tags": [
+    "React",
+    "Database",
+    "C++",
+    "C",
+    "Python",
+    "AI",
+    "DataScience, Git, Web"
+  ],
+  "qas": [
+    {
+      "id": 1,
+      "title": "What is the best database to use with React?",
+      "category": "Programming",
+      "question": "What should I consider when choosing the database with ReactJS?",
+      "tags": ["React", "Database"],
+      "questiondate": "2020-05-21",
+      "questionmodifieddate": "",
+      "answers": [
+        {
+          "text": "Well, actually ReactJS is basically a view library that runs on your browser, and it’s main goal is to render everything that user sees on their device (browser, mobile app in case of react-native). Now, this is your frontend stack. Usually, you will also have backend stack, your server that runs your application. And database is part of backend stack. On backend you have variety of choices of languages (and frameworks) from Javascript (express, koa, etc) to Java(spring), Python(django), PHP(laravel) and many more. And from your server application you connect to your database and here you have another variety of choices, based on your needs (relational databases, nosql databases and etc). Your React application connects to your server application usually with REST requests, like fetch(‘/users’) and your server app will understand what you are asking and make request to database and send back data to React app. All of the above being said, there is one database with which you can easily work from React, Firebase. It is a real-time “key-value” database, where you can store data in keys and values like JSON format. It also has user management and security rules, and it’s killer feature, real time updates. So, if your data changes, every app that is listening to this particular data will receive an update immediately, without the need to send request from the app.",
+          "answer_id": 1,
+          "answerer": "mattimeik",
+          "answerer_id": 7,
+          "answerdate": "2020-05-21",
+          "answermodifieddate": "",
+          "answer_likes": 1
+        },
+        {
+          "text": "Everyone’s right; there is no “best” db to use with React JS because the type of framework/library you choose for your front end is never related to the type of db you choose. With that said, you’ve got a lot of options. A few that I’ve worked with are the following: Firebase: Easy/quick to set up, NoSQL, cool realtime database that makes it easier for you to test out your db calls. MongoDB: Object-oriented, NoSQL db; pretty much similar to Firebase except that it doesn’t have any realtime features. PostgreSQL: Object-relational database that takes a little more time to set up, but the process is made easier with Sequelize.js; an ORM that lets us communicate with our PostgreSQL databases by mapping database entries to objects. I’ve used all three of these db’s in the same consecutive order I typed them in. But I’m going to recommend taking up the challenge of implementing PostgreSQL with Sequelize. Having a SQL db makes it easier & faster to access/manipulate your data, especially when your dataset is/will become big.",
+          "answer_id": 2,
+          "answerer": "kisumisu",
+          "answerer_id": 14,
+          "answerdate": "2020-05-31",
+          "answermodifieddate": "",
+          "answer_likes": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Why are there two ways to unstage a file in Git?",
+      "category": "Programming",
+      "question": "Sometimes git suggests git rm --cached to unstage a file, sometimes git reset HEAD file. When should I use which?",
+      "tags": ["Git"],
+      "questiondate": "2010-05-21",
+      "questionmodifieddate": "",
+      "answers": [
+        {
+          "text": "git rm --cached <filePath> does not unstage a file, it actually stages the removal of the file(s) from the repo (assuming it was already committed before) but leaves the file in your working tree (leaving you with an untracked file). git reset -- <filePath> will unstage any staged changes for the given file(s). That said, if you used git rm --cached on a new file that is staged, it would basically look like you had just unstaged it since it had never been committed before. Update git 2.24 In this newer version of git you can use git restore --staged instead of git reset.",
+          "answer_id": 1,
+          "answerer": "ryansteward",
+          "answerer_id": 2,
+          "answerdate": "2011-07-29",
+          "answermodifieddate": "",
+          "answer_likes": 100
+        },
+        {
+          "text": "git rm --cached is used to remove a file from the index. In the case where the file is already in the repo, git rm --cached will remove the file from the index, leaving it in the working directory and a commit will now remove it from the repo as well. Basically, after the commit, you would have unversioned the file and kept a local copy. git reset HEAD file ( which by default is using the --mixed flag) is different in that in the case where the file is already in the repo, it replaces the index version of the file with the one from repo (HEAD), effectively unstaging the modifications to it. In the case of unversioned file, it is going to unstage the entire file as the file was not there in the HEAD. In this aspect git reset HEAD file and git rm --cached are same, but they are not same ( as explained in the case of files already in the repo) To the question of Why are there 2 ways to unstage a file in git? - there is never really only one way to do anything in git. that is the beauty of it :)",
+          "answer_id": 2,
+          "answerer": "manojlds",
+          "answerer_id": 2,
+          "answerdate": "2011-08-31",
+          "answermodifieddate": "",
+          "answer_likes": 12
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "userid": 12,
+      "username": "admin",
+      "usertype": "admin",
+      "useremail": "commonqamainuser@gmail.com",
+      "password": "admin",
+      "name": "Adam Plummer"
+    },
+    {
+      "userid": 1,
+      "username": "ryansteward",
+      "usertype": "user",
+      "useremail": "RyanSteward87@gmail.com",
+      "password": "ryansteward",
+      "name": "Ryan Steward"
+    },
+    {
+      "userid": 2,
+      "username": "manojlds",
+      "usertype": "user",
+      "useremail": "manumononen55@gmail.com",
+      "password": "manojlds",
+      "name": "Manu Mononen"
+    },
+    {
+      "userid": 7,
+      "username": "mattimeik",
+      "usertype": "user",
+      "useremail": "matti.meik@gmail.com",
+      "password": "mattimeik",
+      "name": "Matti Meikäläinen"
+    },
+    {
+      "userid": 14,
+      "username": "kisumisu",
+      "usertype": "user",
+      "useremail": "kisumisu356@gmail.com",
+      "password": "kisumisu",
+      "name": "Maija Meikäläinen"
+    }
+  ]
+}
