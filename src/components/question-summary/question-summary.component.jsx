@@ -1,7 +1,5 @@
 import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
-import Table from 'react-bootstrap/Table';
-import Votes from '../votes/votes.component';
 
 class QuestionSummary extends React.Component {
   constructor(props) {
