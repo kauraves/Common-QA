@@ -1,7 +1,6 @@
 import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
-import Table from 'react-bootstrap/Table';
-import Votes from '../votes/votes.component';
+import { Link } from 'react-router-dom';
 
 class QuestionSummary extends React.Component {
   constructor(props) {
@@ -14,6 +13,7 @@ class QuestionSummary extends React.Component {
 
   componentDidMount() {
     this.getQuestions();
+    console.log(this.state.data);
   }
 
   sleep(ms) {
@@ -23,6 +23,7 @@ class QuestionSummary extends React.Component {
   getQuestions = async () => {
     let data = await getAllQuestions();
     await this.sleep(200);
+    console.log(data);
     await this.setState({ data: data });
   };
 
@@ -55,19 +56,20 @@ class QuestionSummary extends React.Component {
     return ParsedDate;
   }
 
-  getDate(date) {
-    let ParsedDate = new Date(date);
-    ParsedDate =
-      ParsedDate.getDate() +
-      '.' +
-      (ParsedDate.getMonth() + 1) +
-      '.' +
-      ParsedDate.getFullYear();
-    return ParsedDate;
-  }
+  // getDate(date) {
+  //   let ParsedDate = new Date(date);
+  //   ParsedDate =
+  //     ParsedDate.getDate() +
+  //     '.' +
+  //     (ParsedDate.getMonth() + 1) +
+  //     '.' +
+  //     ParsedDate.getFullYear();
+  //   return ParsedDate;
+  // }
 
 
   render() {
+
     //console.log('State in render for data:', this.state.data);
     const questionItems = this.state.data.map(questionItem =>
       <tr>
@@ -99,6 +101,7 @@ class QuestionSummary extends React.Component {
             {questionItems}
           </tbody>
         </Table>
+
       </div>
     );
   }

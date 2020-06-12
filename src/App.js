@@ -7,8 +7,9 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import HomePage from './pages/homepage/homepage.component';
 import ProfilePage from './pages/profile/profile.component';
 import AdminPage from './pages/admin/adminpage.component';
+import QuestionPage from './pages/question/questionpage.component';
 
-const test = (props) => {
+const test = () => {
   return (
     <div>
       <h1>test page</h1>
@@ -73,8 +74,21 @@ class App extends React.Component {
                 )
               }
             />
-            <Route exact path='/profile' render={() => <ProfilePage currentUser={this.state.currentUser} />} />
+
+            <Route
+              exact
+              path='/profile'
+              render={() =>
+                this.state.currentUser ? <ProfilePage /> : <Redirect to='/' />
+              }
+            />
+
             <Route exact path='/test' component={test} />
+            <Route
+              path='/question/:slug'
+              render={(props) => <QuestionPage content={props} />}
+            />
+
             <Route
               exact
               path='/admin'

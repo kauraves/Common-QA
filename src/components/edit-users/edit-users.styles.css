@@ -1,0 +1,10 @@
+.edit-users {
+  width: 75vw;
+  margin: 25px auto;
+  padding: 25px;
+}
+
+.edit-users-form input[type='text'] {
+  width: 50%;
+  display: inline-block;
+}
