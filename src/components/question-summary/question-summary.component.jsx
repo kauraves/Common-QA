@@ -1,6 +1,7 @@
 import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
 import { Link } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
 
 class QuestionSummary extends React.Component {
   constructor(props) {
@@ -67,26 +68,29 @@ class QuestionSummary extends React.Component {
   //   return ParsedDate;
   // }
 
-
   render() {
-
     //console.log('State in render for data:', this.state.data);
-    const questionItems = this.state.data.map(questionItem =>
-      <tr>
+    const questionItems = this.state.data.map((questionItem, index) => (
+      <tr key={index}>
         <td>
-          <p>Asked by: {questionItem.author_name} at{' '}</p>
-          <p>{this.getDateAndTime(questionItem.created_at.seconds)}</p>     
+          <p>Asked by: {questionItem.author_name} at </p>
+          <p>{this.getDateAndTime(questionItem.created_at.seconds)}</p>
         </td>
         <td>
           <h4
             className='question-title'
             onClick={() => this.goToQuestion(questionItem.post_id)}>
-            <a href={questionItem.post_id}>{questionItem.title}</a>
+            <Link
+              key={questionItem.post_id}
+              to={`/question/${questionItem.post_id}`}
+              content={questionItem.post_id}>
+              {questionItem.title}
+            </Link>
           </h4>
           <p>{questionItem.body.substr(1, 250)}</p>
         </td>
       </tr>
-    );
+    ));
 
     return (
       <div>
@@ -97,11 +101,8 @@ class QuestionSummary extends React.Component {
               <th>Questions</th>
             </tr>
           </thead>
-          <tbody>
-            {questionItems}
-          </tbody>
+          <tbody>{questionItems}</tbody>
         </Table>
-
       </div>
     );
   }
