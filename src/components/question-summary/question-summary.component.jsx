@@ -13,6 +13,7 @@ class QuestionSummary extends React.Component {
 
   componentDidMount() {
     this.getQuestions();
+    console.log(this.state.data);
   }
 
   sleep(ms) {
@@ -22,6 +23,7 @@ class QuestionSummary extends React.Component {
   getQuestions = async () => {
     let data = await getAllQuestions();
     await this.sleep(200);
+    console.log(data);
     await this.setState({ data: data });
   };
 

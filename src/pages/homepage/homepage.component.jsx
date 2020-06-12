@@ -4,8 +4,7 @@
 //The number of answers
 
 import React from 'react';
-import Table from 'react-bootstrap/Table';
-import Votes from '../../components/votes/votes.component';
+
 import QuestionSummary from '../../components/question-summary/question-summary.component';
 import './homepage.styles.css';
 

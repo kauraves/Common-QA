@@ -67,6 +67,47 @@ export const showQuestionDocument = async (props) => {
   return data;
 };
 
+export const showAnswers = async (props) => {
+  let data = [];
+  db.collection('questions')
+    .doc(props)
+    .collection('anwers')
+    .get()
+    .then(function (doc) {
+      doc.forEach((item) => {
+        getAnswerData(props, item.id).then(function (result) {
+          data.push({ answer_id: item.id, ...result });
+        });
+      });
+      //console.log(data);
+      // querySnapshot.forEach(function (doc) {
+
+      //   // doc.data() is never undefined for query doc snapshots
+      //   console.log(doc.id, ' => ', doc.data());
+      // });
+    });
+  return data;
+};
+
+export const getAnswerData = async (props, id) => {
+  let data = [];
+  await db
+    .collection('questions')
+    .doc(props)
+    .collection('anwers')
+    .doc(id)
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+      } else {
+        console.log('No such data');
+      }
+    });
+
+  return data;
+};
+
 export const showUserDocument = async (props) => {
   // Uid comes in as props, now we get the document with that uid
   let data = '';
