@@ -71,7 +71,7 @@ export const showAnswers = async (props) => {
   let data = [];
   db.collection('questions')
     .doc(props)
-    .collection('anwers')
+    .collection('answers')
     .get()
     .then(function (doc) {
       doc.forEach((item) => {
@@ -94,7 +94,7 @@ export const getAnswerData = async (props, id) => {
   await db
     .collection('questions')
     .doc(props)
-    .collection('anwers')
+    .collection('answers')
     .doc(id)
     .get()
     .then(function (doc) {

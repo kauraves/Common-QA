@@ -83,7 +83,7 @@ class App extends React.Component {
             />
             <Route exact path='/test' component={test} />
             <Route
-              path='/posts/:slug'
+              path='/question/:slug'
               render={(props) => <QuestionPage content={props} />}
             />
 

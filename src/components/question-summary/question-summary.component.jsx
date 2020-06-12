@@ -68,16 +68,12 @@ class QuestionSummary extends React.Component {
   // }
 
   render() {
-    //console.log('State in render for data:', this.state.data);
-
     return (
       <div>
         {this.state.data.map((item) => (
           <div className='post' key={item.post_id}>
-            <h4
-              className='question-title'
-              onClick={() => this.goToQuestion(item.post_id)}>
-              <Link to={`/posts/${item.post_id}`} content={item.post_id}>
+            <h4 className='question-title'>
+              <Link to={`/question/${item.post_id}`} content={item.post_id}>
                 {item.title}
               </Link>
             </h4>
