@@ -66,26 +66,39 @@ class QuestionSummary extends React.Component {
     return ParsedDate;
   }
 
+
   render() {
     //console.log('State in render for data:', this.state.data);
+    const questionItems = this.state.data.map(questionItem =>
+      <tr>
+        <td>
+          <p>Asked by: {questionItem.author_name} at{' '}</p>
+          <p>{this.getDateAndTime(questionItem.created_at.seconds)}</p>     
+        </td>
+        <td>
+          <h4
+            className='question-title'
+            onClick={() => this.goToQuestion(questionItem.post_id)}>
+            <a href={questionItem.post_id}>{questionItem.title}</a>
+          </h4>
+          <p>{questionItem.body.substr(1, 250)}</p>
+        </td>
+      </tr>
+    );
 
     return (
       <div>
-        {this.state.data.map((item) => (
-          <div className='post' key={item.post_id}>
-            <h4
-              className='question-title'
-              onClick={() => this.goToQuestion(item.post_id)}>
-              <a href={item.post_id}>{item.title}</a>
-            </h4>
-            <p>{item.body.substr(1, 250)}</p>
-            <p>
-              Asked by: {item.author_name} at{' '}
-              {this.getDateAndTime(item.created_at.seconds)}
-            </p>
-            <hr />
-          </div>
-        ))}
+        <Table bordered hover>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Questions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questionItems}
+          </tbody>
+        </Table>
       </div>
     );
   }
