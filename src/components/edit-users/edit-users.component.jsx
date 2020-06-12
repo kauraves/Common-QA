@@ -4,6 +4,7 @@ import {
   showUserDocument,
   editUser,
 } from '../../firebase/firebase.utils';
+import './edit-users.styles.css';
 
 class EditUsers extends React.Component {
   constructor() {
@@ -32,7 +33,7 @@ class EditUsers extends React.Component {
       console.log('Nothing to see in here');
     }
 
-    await console.log(this.state);
+    await console.log('Found user: ', this.state.userData);
   };
 
   changeAdminStatus = async (e) => {
@@ -50,12 +51,39 @@ class EditUsers extends React.Component {
     this.setState({ [name]: value });
   };
 
+  getUserData = (data) => {
+    //data = this.state.userData;
+    //console.log(data);
+    // Object.keys(data).map((item) => {
+    //   return <div>This is: {item}</div>;
+    // });
+    //return <div>Object.keys(data).map((item) => {console.log(item)});</div>;
+    // data.map((item, i) => {
+    //   console.log('data added', i);
+    //   return <div key={i} answer={item} />;
+    // });
+  };
+
   render() {
+    let status = '';
+    if (this.state.statusFound) {
+      status = 'This user is ';
+      if (this.state.userData.isAdmin) {
+        status += 'an admin';
+      } else {
+        status += 'a subscriber';
+      }
+    }
+
+    // {this.state.statusFound ? {this.state.userData.isAdmin ? 'admin' : 'user'} : null}
+
     return (
       <div className='edit-users'>
         <h3>Edit users</h3>
         <p>Find user by email:</p>
-        <form onSubmit={(e) => this.findUser(e, true)}>
+        <form
+          className='edit-users-form'
+          onSubmit={(e) => this.findUser(e, true)}>
           <input
             type='text'
             name='userEmail'
@@ -66,9 +94,13 @@ class EditUsers extends React.Component {
           <button type='submit'>Find user</button>
         </form>
 
-        <div>
-          {this.state.userData.isAdmin ? 'admin' : 'user'}
+        <div className='user-data'></div>
 
+        {this.state.userData.email
+          ? this.getUserData(this.state.userData)
+          : null}
+        {status}
+        <div>
           <button onClick={this.changeAdminStatus}>
             EDIT FOUND USERS ADMIN status
           </button>

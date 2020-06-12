@@ -1,5 +1,6 @@
 import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
+import { Link } from 'react-router-dom';
 
 class QuestionSummary extends React.Component {
   constructor(props) {
@@ -53,16 +54,16 @@ class QuestionSummary extends React.Component {
     return ParsedDate;
   }
 
-  getDate(date) {
-    let ParsedDate = new Date(date);
-    ParsedDate =
-      ParsedDate.getDate() +
-      '.' +
-      (ParsedDate.getMonth() + 1) +
-      '.' +
-      ParsedDate.getFullYear();
-    return ParsedDate;
-  }
+  // getDate(date) {
+  //   let ParsedDate = new Date(date);
+  //   ParsedDate =
+  //     ParsedDate.getDate() +
+  //     '.' +
+  //     (ParsedDate.getMonth() + 1) +
+  //     '.' +
+  //     ParsedDate.getFullYear();
+  //   return ParsedDate;
+  // }
 
   render() {
     //console.log('State in render for data:', this.state.data);
@@ -74,9 +75,11 @@ class QuestionSummary extends React.Component {
             <h4
               className='question-title'
               onClick={() => this.goToQuestion(item.post_id)}>
-              <a href={item.post_id}>{item.title}</a>
+              <Link to={`/posts/${item.post_id}`} content={item.post_id}>
+                {item.title}
+              </Link>
             </h4>
-            <p>{item.body.substr(1, 250)}</p>
+            <p>{item.body.substr(0, 250)}</p>
             <p>
               Asked by: {item.author_name} at{' '}
               {this.getDateAndTime(item.created_at.seconds)}

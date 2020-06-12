@@ -49,6 +49,24 @@ export const editUser = async (uid, isAdmin) => {
   }
 };
 
+export const showQuestionDocument = async (props) => {
+  let data = '';
+  await db
+    .collection('questions')
+    .doc(props)
+    .get()
+    .then(async function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+        //console.log(data);
+      } else {
+        console.log('No such data');
+      }
+    });
+  //await console.log(data);
+  return data;
+};
+
 export const showUserDocument = async (props) => {
   // Uid comes in as props, now we get the document with that uid
   let data = '';
@@ -59,12 +77,12 @@ export const showUserDocument = async (props) => {
     .then(async function (doc) {
       if (doc.exists) {
         data = doc.data();
-        console.log(data);
+        //console.log(data);
       } else {
         console.log('No such data');
       }
     });
-  await console.log(data);
+  //await console.log(data);
   return data;
 };
 
