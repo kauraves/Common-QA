@@ -74,6 +74,7 @@ class App extends React.Component {
                 )
               }
             />
+
             <Route
               exact
               path='/profile'
@@ -81,6 +82,7 @@ class App extends React.Component {
                 this.state.currentUser ? <ProfilePage /> : <Redirect to='/' />
               }
             />
+
             <Route exact path='/test' component={test} />
             <Route
               path='/question/:slug'
