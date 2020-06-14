@@ -141,6 +141,41 @@ export const findUserProfileDocument = async (email) => {
   return data;
 };
 
+export const getQuestionsAns = async (qid) => {
+  let data = [];
+  await firebase
+    .firestore()
+    .collection('answers')
+    .where('questionid', '==', qid)
+    .get()
+    .then(function (doc) {
+      doc.forEach((item) => {
+        getAnswerData2(item.id).then(function (result) {
+          data.push({ answer_id: item.id, ...result });
+        });
+      });
+    });
+
+  return data;
+};
+
+export const getAnswerData2 = async (id) => {
+  let data = [];
+  await db
+    .collection('answers')
+    .doc(id)
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+      } else {
+        console.log('No such data');
+      }
+    });
+
+  return data;
+};
+
 export const getAllQuestions = async () => {
   let data = [];
   await firebase

@@ -1,9 +1,7 @@
 import React from 'react';
-import {
-  showQuestionDocument,
-  showAnswers,
-} from '../../firebase/firebase.utils';
+import {showQuestionDocument, showAnswers, getQuestionsAns} from '../../firebase/firebase.utils';
 import { getDateAndTime } from '../../functions';
+import Table from 'react-bootstrap/Table';
 
 import { sleep } from '../../functions';
 
@@ -16,6 +14,17 @@ class Question extends React.Component {
       answerData: [],
     };
   }
+
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  getQuestionsAnswersLocal = async (id) => {
+    let data = await getQuestionsAns(id);
+    await this.sleep(500);
+    console.log(data);
+    await this.setState({ answerData: data });
+  };
 
   getQuestion = async () => {
     // Change this to .then() instead of await
@@ -35,10 +44,40 @@ class Question extends React.Component {
   };
 
   componentDidMount() {
+    //this.getQuestion();
+    this.getQuestionsAnswersLocal(this.props.id);
     this.getQuestion();
   }
 
+  getDateAndTime(seconds) {
+    let ParsedDate = new Date(seconds * 1000);
+    ParsedDate =
+      ParsedDate.getDate() +
+      '.' +
+      (ParsedDate.getMonth() + 1) +
+      '.' +
+      ParsedDate.getFullYear() +
+      ' : ' +
+      ParsedDate.getHours() +
+      ':' +
+      ParsedDate.getMinutes() +
+      ':' +
+      ParsedDate.getSeconds();
+    return ParsedDate;
+  }
+
   render() {
+    const answers = this.state.answerData.map((answer, index) => (
+      <tr key={index}>
+        
+        <td>
+          <p>{answer.body + " "} {}</p>
+          <p>Answered by: {answer.author_name} at {this.getDateAndTime(answer.created_at.seconds)}</p>
+          
+        </td>
+      </tr>
+    ));
+
     return (
       <div>
         <div>
@@ -50,9 +89,19 @@ class Question extends React.Component {
           </p>
           <hr />
         </div>
+        <Table bordered hover>
+          <thead>
+            <tr>
+              
+              <th>Answers</th>
+            </tr>
+          </thead>
+          <tbody>{answers}</tbody>
+        </Table>
       </div>
     );
   }
 }
 
 export default Question;
+
