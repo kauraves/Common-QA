@@ -1,7 +1,8 @@
 import React from 'react';
 import {showQuestionDocument, showAnswers, getQuestionsAns} from '../../firebase/firebase.utils';
 import { getDateAndTime } from '../../functions';
-import Table from 'react-bootstrap/Table';
+//import Table from 'react-bootstrap/Table';
+import AnswerList from './../answers/AnswerList';
 
 import { sleep } from '../../functions';
 
@@ -9,6 +10,7 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log("aid: " + this.props.aid);
     this.state = {
       data: '',
       answerData: [],
@@ -19,9 +21,9 @@ class Question extends React.Component {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  getQuestionsAnswersLocal = async (id) => {
+  getQuestionsAnswers = async (id) => {
     let data = await getQuestionsAns(id);
-    await this.sleep(500);
+    await this.sleep(200);
     console.log(data);
     await this.setState({ answerData: data });
   };
@@ -33,7 +35,7 @@ class Question extends React.Component {
     let newDate = await getDateAndTime(data.created_at.seconds);
     await this.setState({ data: { ...data, created_at: newDate } });
 
-    await this.getAnswers();
+    //await this.getAnswers();
   };
 
   getAnswers = async () => {
@@ -45,29 +47,12 @@ class Question extends React.Component {
 
   componentDidMount() {
     //this.getQuestion();
-    this.getQuestionsAnswersLocal(this.props.id);
+    this.getQuestionsAnswers(this.props.id);
     this.getQuestion();
   }
 
-  getDateAndTime(seconds) {
-    let ParsedDate = new Date(seconds * 1000);
-    ParsedDate =
-      ParsedDate.getDate() +
-      '.' +
-      (ParsedDate.getMonth() + 1) +
-      '.' +
-      ParsedDate.getFullYear() +
-      ' : ' +
-      ParsedDate.getHours() +
-      ':' +
-      ParsedDate.getMinutes() +
-      ':' +
-      ParsedDate.getSeconds();
-    return ParsedDate;
-  }
-
   render() {
-    const answers = this.state.answerData.map((answer, index) => (
+    /*const answers = this.state.answerData.map((answer, index) => (
       <tr key={index}>
         
         <td>
@@ -77,27 +62,24 @@ class Question extends React.Component {
         </td>
       </tr>
     ));
+    */
 
     return (
-      <div>
+      <div className="container-fluid">
         <div>
           <h1>{this.state.data.title}</h1>
-          <p>{this.state.data.body}</p>
-          <p>
+          <p className="textBlock">{this.state.data.body}</p>
+          <p className="textBlock">
             Question asked by {this.state.data.author_name} at{' '}
             {this.state.data.created_at}
           </p>
-          <hr />
+          
         </div>
-        <Table bordered hover>
-          <thead>
-            <tr>
-              
-              <th>Answers</th>
-            </tr>
-          </thead>
-          <tbody>{answers}</tbody>
-        </Table>
+        <AnswerList answers={ this.state.answerData } 
+                    question_id = {this.props.id}
+        />
+
+        
       </div>
     );
   }
@@ -105,3 +87,9 @@ class Question extends React.Component {
 
 export default Question;
 
+/*
+<Table bordered hover>
+          
+          <tbody>{answers}</tbody>
+        </Table>
+*/

@@ -67,6 +67,24 @@ export const showQuestionDocument = async (props) => {
   return data;
 };
 
+export const showAnswerDocument = async (props) => {
+  let data = '';
+  await db
+    .collection('answers')
+    .doc(props)
+    .get()
+    .then(async function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+        //console.log(data);
+      } else {
+        console.log('No such data');
+      }
+    });
+  //await console.log(data);
+  return data;
+};
+
 export const showAnswers = async (props) => {
   let data = [];
   db.collection('questions')
