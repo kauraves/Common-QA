@@ -1,11 +1,12 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-
-
-import EditUsers from './../../components/edit-users/edit-users.component';
+import './profile.styles.css';
+import logo from '../../assets/logo192.png';
 
 class ProfilePage extends React.Component {
 
@@ -23,36 +24,47 @@ class ProfilePage extends React.Component {
     }
 
     return (
-      <div className='profile'>
+      <Container className='profile'>
         <h1>Profile</h1>
-        <p>Here you can see and edit your profile</p>
+        <br></br>
         <p>Your role: {isAdmin === true ? 'admin' : 'user'}</p>
-        <Form>
-          <Form.Group as={Row} className="profileForm">
-            <Form.Label column sm="2">
-              Name
-            </Form.Label>
-            <Col md="5">
-              <Form.Control plaintext readOnly placeholder={name} />
-            </Col>
-            <Button>
-              Edit
-            </Button>
-          </Form.Group>
+        <Row>
+        <Col md="2" >
+          <Image src={logo} />
+          <Button>Change image</Button>
+        </Col>
+        <Col>
+          <Form>
+            <Form.Group as={Row} className="align-items-center">
+              <Form.Label column sm="2">
+                Name
+              </Form.Label>
+              <Col md="3" >
+                <Form.Control readOnly placeholder={name} />
+              </Col>
+              <Button>
+                Edit
+              </Button>
+            </Form.Group>
 
-          <Form.Group as={Row} className="profileForm">
-            <Form.Label column sm="2">
-              Email
-            </Form.Label>
-            <Col md="5">
-              <Form.Control plaintext readOnly type="email" placeholder={email} />
-            </Col>
-            <Button>
-              Edit
-            </Button>
-          </Form.Group>
-        </Form>
-      </div>
+            <Form.Group as={Row} className="align-items-center">
+              <Form.Label column sm="2">
+                Email
+              </Form.Label>
+              <Col md="3">
+                <Form.Control readOnly type="email" placeholder={email} />
+              </Col>
+              <Button>
+                Edit
+              </Button>
+            </Form.Group>
+          </Form>
+        </Col>
+        </Row>
+
+        
+        
+      </Container>
     ); 
   }
 }
