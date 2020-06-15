@@ -7,11 +7,17 @@ export const getDateAndTime = (seconds) => {
     '.' +
     ParsedDate.getFullYear() +
     ' : ' +
-    ParsedDate.getHours() +
+    (ParsedDate.getHours() < 12
+      ? '0' + ParsedDate.getHours()
+      : ParsedDate.getHours()) +
     ':' +
-    ParsedDate.getMinutes() +
+    (ParsedDate.getMinutes() < 10
+      ? '0' + ParsedDate.getMinutes()
+      : ParsedDate.getMinutes()) +
     ':' +
-    ParsedDate.getSeconds();
+    (ParsedDate.getSeconds() < 10
+      ? '0' + ParsedDate.getSeconds()
+      : ParsedDate.getSeconds());
   return ParsedDate;
 };
 
