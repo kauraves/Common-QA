@@ -102,7 +102,7 @@ class EditUsers extends React.Component {
                 label='email'
                 required></Form.Control>
             </Col>
-            <Button type='submit'>Find user by email</Button>
+            <Button variant='light' type='submit'>Find user by email</Button>
           </Form.Group>
 
           <Form.Group as={Row} className='align-items-center'>
@@ -114,7 +114,7 @@ class EditUsers extends React.Component {
               <Form.Control readOnly placeholder={status} />
             </Col>
 
-            <Button onClick={this.changeAdminStatus}>
+            <Button variant='light' onClick={this.changeAdminStatus}>
               Change USERS ADMIN status
             </Button>
           </Form.Group>

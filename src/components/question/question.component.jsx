@@ -46,6 +46,7 @@ class Question extends React.Component {
             Question asked by {this.state.data.author_name} at{' '}
             {this.state.data.created_at}
           </p>
+          <br></br>
         </div>
         <AnswerList
           answers={this.state.answerData}

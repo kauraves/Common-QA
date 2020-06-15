@@ -1,5 +1,8 @@
 import React from 'react';
-import { Form, Button, Header } from 'semantic-ui-react';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
 
 import {
   showAnswerDocument,
@@ -63,22 +66,22 @@ class EditAnswer extends React.Component {
 
   render() {
     return (
-      <div>
-        {' '}
+      <Container>      
         <Form onSubmit={this.submit}>
-          <Header as='h2'>Answer</Header>
-          <Form.Field>
-            <textarea
+            <h2>Edit answer</h2>
+          <Form.Control
+              as='textarea'
+              type='text'
               className='form-control'
               id='exampleFormControlTextarea1'
               rows='12'
               onChange={this.onChange}
               name='body'
-              value={this.state.editBody}></textarea>
-          </Form.Field>
+              value={this.state.editBody}>
+          </Form.Control>
         </Form>
-        <Button onClick={this.onSubmit}>Submit changes</Button>
-      </div>
+        <Button variant="light" onClick={this.onSubmit}>Submit changes</Button>
+      </Container>
     );
   }
 }

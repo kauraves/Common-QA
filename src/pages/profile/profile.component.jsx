@@ -31,7 +31,7 @@ class ProfilePage extends React.Component {
         <Row>
         <Col md="2" >
           <Image src={logo} />
-          <Button>Change image</Button>
+          <Button variant='light'>Change image</Button>
         </Col>
         <Col>
           <Form>
@@ -42,7 +42,7 @@ class ProfilePage extends React.Component {
               <Col md="3" >
                 <Form.Control readOnly placeholder={name} />
               </Col>
-              <Button>
+              <Button variant='light'>
                 Edit
               </Button>
             </Form.Group>
@@ -54,7 +54,7 @@ class ProfilePage extends React.Component {
               <Col md="3">
                 <Form.Control readOnly type="email" placeholder={email} />
               </Col>
-              <Button>
+              <Button variant='light'>
                 Edit
               </Button>
             </Form.Group>

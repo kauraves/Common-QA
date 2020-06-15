@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 import { getDateAndTime } from '../../functions';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
@@ -36,15 +37,14 @@ class AnswerList extends Component {
     let answerItems = this.props.answers.map((answer, index) => (
       <tr key={index}>
         <td>
-          <button>
+          <Button variant='light'>
             <i className='fas fa-thumbs-up'></i>
-          </button>
+          </Button>
           <span>{answer.votes}</span>
           <p>{this.markedAsBestAnswer(answer)}</p>
-
-          <button>
+          <Button variant='light'>
             <i className='fas fa-thumbs-down'></i>
-          </button>
+          </Button>
         </td>
         <td>
           <p className='textBlock'>{answer.body + ' '}</p>
@@ -61,7 +61,7 @@ class AnswerList extends Component {
                   question_id: answer.question_id,
                 },
               }}>
-              <button>Edit</button>
+              <Button variant='light'>Edit</Button>
             </Link>
           ) : (
             'hi'
@@ -75,7 +75,7 @@ class AnswerList extends Component {
     } else {
       return (
         <div className='homepage'>
-          <Table striped bordered hover>
+          <Table bordered hover>
             <thead>
               <tr>
                 <th></th>
