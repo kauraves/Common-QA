@@ -67,6 +67,24 @@ export const showQuestionDocument = async (props) => {
   return data;
 };
 
+export const showAnswerDocument = async (props) => {
+  let data = '';
+  await db
+    .collection('answers')
+    .doc(props)
+    .get()
+    .then(async function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+        //console.log(data);
+      } else {
+        console.log('No such data');
+      }
+    });
+  //await console.log(data);
+  return data;
+};
+
 export const showAnswers = async (props) => {
   let data = [];
   db.collection('questions')
@@ -138,6 +156,41 @@ export const findUserProfileDocument = async (email) => {
         data = doc;
       } else console.log('No such user');
     });
+  return data;
+};
+
+export const getQuestionsAns = async (qid) => {
+  let data = [];
+  await firebase
+    .firestore()
+    .collection('answers')
+    .where('questionid', '==', qid)
+    .get()
+    .then(function (doc) {
+      doc.forEach((item) => {
+        getAnswerData2(item.id).then(function (result) {
+          data.push({ answer_id: item.id, ...result });
+        });
+      });
+    });
+
+  return data;
+};
+
+export const getAnswerData2 = async (id) => {
+  let data = [];
+  await db
+    .collection('answers')
+    .doc(id)
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        data = doc.data();
+      } else {
+        console.log('No such data');
+      }
+    });
+
   return data;
 };
 

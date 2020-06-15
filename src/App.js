@@ -8,6 +8,9 @@ import HomePage from './pages/homepage/homepage.component';
 import ProfilePage from './pages/profile/profile.component';
 import AdminPage from './pages/admin/adminpage.component';
 import QuestionPage from './pages/question/questionpage.component';
+import AnswerPage from './pages/answer/answerpage.component';
+import AnswerForm from './components/answers/AnswerForm';
+import {observer,inject} from 'mobx-react';
 
 const test = () => {
   return (
@@ -43,10 +46,13 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
+          this.props.state.currentUser = this.state.currentUser;
           console.log(this.state.currentUser);
         });
       } else {
         this.setState({ currentUser: userAuth });
+        this.props.state.currentUser = userAuth;
+        console.log("componentDidMount in App else: " + userAuth);
       }
     });
   }
@@ -84,11 +90,30 @@ class App extends React.Component {
             />
 
             <Route exact path='/test' component={test} />
+
             <Route
+              exact
               path='/question/:slug'
               render={(props) => <QuestionPage content={props} />}
             />
 
+            <Route
+              exact
+              path='/answer/:answer_id'
+              render={(props) => 
+                <AnswerForm answer_id={props.match.params.answer_id}
+                            answermode = {"Edit"} />}
+            />
+
+            <Route
+              path='/answer/:answer_id'
+              
+              render={(routeProps) => 
+                <AnswerPage { ...this.props } { ...routeProps } 
+                answer_id={routeProps.match.params.answer_id}
+                content={routeProps}
+                question_id = {7} />}
+            />
             <Route
               exact
               path='/admin'
@@ -107,4 +132,7 @@ class App extends React.Component {
   }
 }
 
-export default withRouter(App);
+export default inject(store => ({
+	state:store.state
+}))(observer(withRouter(App)))
+
