@@ -66,7 +66,7 @@ class App extends React.Component {
     return (
       <div className='App'>
         <Header currentUser={this.state.currentUser} />
-        <div className='content'>
+        <div className='content' >
           <Switch>
             <Route exact path='/' render={() => <HomePage />} />
             <Route
@@ -85,7 +85,7 @@ class App extends React.Component {
               exact
               path='/profile'
               render={() =>
-                this.state.currentUser ? <ProfilePage /> : <Redirect to='/' />
+                this.state.currentUser ? <ProfilePage currentUser={this.state.currentUser}/> : <Redirect to='/' />
               }
             />
 

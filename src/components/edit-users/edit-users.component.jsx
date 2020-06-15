@@ -4,7 +4,12 @@ import {
   showUserDocument,
   editUser,
 } from '../../firebase/firebase.utils';
-import './edit-users.styles.css';
+import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+//import './edit-users.styles.css';
 
 class EditUsers extends React.Component {
   constructor() {
@@ -78,34 +83,44 @@ class EditUsers extends React.Component {
     // {this.state.statusFound ? {this.state.userData.isAdmin ? 'admin' : 'user'} : null}
 
     return (
-      <div className='edit-users'>
-        <h3>Edit users</h3>
-        <p>Find user by email:</p>
-        <form
-          className='edit-users-form'
-          onSubmit={(e) => this.findUser(e, true)}>
-          <input
-            type='text'
-            name='userEmail'
-            value={this.state.userEmail}
-            onChange={this.handleChange}
-            label='email'
-            required></input>
-          <button type='submit'>Find user</button>
-        </form>
+      <Container className='edit-users' >
+        <Row>
+          <h3>Edit users</h3>
+        </Row>
+        <Form
+        className='edit-users-form'
+        onSubmit={(e) => this.findUser(e, true)} >
+          <Form.Group as={Row} className="align-items-center">
+            <Col md="3">
+              <Form.Control as='input'
+                type='text'
+                name='userEmail'
+                placeholder="user@email.com"
+                value={this.state.userEmail}
+                onChange={this.handleChange}
+                label='email'
+                required>
+              </Form.Control>
+            </Col>
+            <Button type='submit'>Find user by email</Button>
+          </Form.Group>
 
-        <div className='user-data'></div>
+          <Form.Group as={Row} className="align-items-center">
 
-        {this.state.userData.email
-          ? this.getUserData(this.state.userData)
-          : null}
-        {status}
-        <div>
-          <button onClick={this.changeAdminStatus}>
-            EDIT FOUND USERS ADMIN status
-          </button>
-        </div>
-      </div>
+            {this.state.userData.email
+            ? this.getUserData(this.state.userData)
+            : null}
+            
+            <Col md="3" >
+                <Form.Control readOnly placeholder={status} />
+            </Col>
+
+            <Button onClick={this.changeAdminStatus}>
+              Change USERS ADMIN status
+            </Button>
+          </Form.Group>
+        </Form>
+      </Container>
     );
   }
 }
