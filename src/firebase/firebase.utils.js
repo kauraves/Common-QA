@@ -20,11 +20,9 @@ var db = firebase.firestore();
 export const editUser = async (uid, isAdmin) => {
   // Find the user with the given uid (props)
   const userRef = firestore.doc(`users/${uid}`);
-  console.log(userRef);
+
   try {
     if (isAdmin) {
-      console.log('is already admin');
-      console.log(userRef);
       await userRef.set(
         {
           isAdmin: false,
@@ -40,7 +38,7 @@ export const editUser = async (uid, isAdmin) => {
         },
         { merge: true }
       );
-      console.log(userRef);
+
       console.log('User has been given an admin status.');
       return true;
     }

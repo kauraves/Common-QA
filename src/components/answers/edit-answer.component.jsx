@@ -14,23 +14,20 @@ class EditAnswer extends React.Component {
     this.state = {
       editBody: '',
     };
-    console.log('Hello:', props);
   }
 
   getAnswer = async () => {
-    console.log('ID:', this.props.answer_id, 'QID:', this.props.question_id);
-
     // Change this to .then() instead of await
     let data = await showAnswerDocument(
       this.props.question_id,
       this.props.answer_id
     );
 
-    console.log(data);
+    console.log('DEMO: stats of the answer you are currently editing:', data);
     // check await?
     let newDate = await getDateAndTime(data.created_at.seconds);
     await this.setState({ data: { ...data, created_at: newDate } });
-    await console.log('Hi there:', this.state);
+
     await this.setState({ editBody: this.state.data.body });
     sleep(500);
   };

@@ -11,7 +11,6 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log('aid: ' + this.props.aid);
     this.state = {
       data: '',
       answerData: [],
@@ -21,7 +20,7 @@ class Question extends React.Component {
   getAllAnswers = async (id) => {
     let data = await showAnswers(id);
     await sleep(200);
-    console.log(data);
+
     await this.setState({ answerData: data });
   };
 

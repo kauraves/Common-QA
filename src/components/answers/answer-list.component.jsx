@@ -33,7 +33,6 @@ class AnswerList extends Component {
   }
 
   render() {
-    console.log('ohhi', this.props);
     let answerItems = this.props.answers.map((answer, index) => (
       <tr key={index}>
         <td>
