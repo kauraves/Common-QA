@@ -1,5 +1,6 @@
 import React from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import Header from './components/header/header.component';
@@ -8,24 +9,14 @@ import HomePage from './pages/homepage/homepage.component';
 import ProfilePage from './pages/profile/profile.component';
 import AdminPage from './pages/admin/adminpage.component';
 import QuestionPage from './pages/question/questionpage.component';
-import AnswerPage from './pages/answer/answerpage.component';
-import AnswerForm from './components/answers/AnswerForm';
-import {observer,inject} from 'mobx-react';
-
-const test = () => {
-  return (
-    <div>
-      <h1>test page</h1>
-    </div>
-  );
-};
+import EditAnswer from './components/answers/edit-answer.component';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentUser: '',
+      currentUser: null,
     };
   }
 
@@ -46,13 +37,11 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
-          this.props.state.currentUser = this.state.currentUser;
-          console.log(this.state.currentUser);
+
+          console.log('DEMO: Current user:', this.state.currentUser);
         });
       } else {
         this.setState({ currentUser: userAuth });
-        this.props.state.currentUser = userAuth;
-        console.log("componentDidMount in App else: " + userAuth);
       }
     });
   }
@@ -61,12 +50,11 @@ class App extends React.Component {
     this.unsubscribeFromAuth();
   }
 
-  // this is a comment
   render() {
     return (
       <div className='App'>
         <Header currentUser={this.state.currentUser} />
-        <div className='content' >
+        <div className='content'>
           <Switch>
             <Route exact path='/' render={() => <HomePage />} />
             <Route
@@ -85,34 +73,42 @@ class App extends React.Component {
               exact
               path='/profile'
               render={() =>
-                this.state.currentUser ? <ProfilePage currentUser={this.state.currentUser}/> : <Redirect to='/' />
+                this.state.currentUser ? (
+                  <ProfilePage currentUser={this.state.currentUser} />
+                ) : (
+                  <Redirect to='/' />
+                )
               }
             />
-
-            <Route exact path='/test' component={test} />
 
             <Route
               exact
               path='/question/:slug'
-              render={(props) => <QuestionPage content={props} />}
+              render={(props) =>
+                this.state.currentUser ? (
+                  <QuestionPage
+                    content={props}
+                    isAdmin={this.state.currentUser.isAdmin}
+                  />
+                ) : (
+                  <QuestionPage content={props} isAdmin={false} />
+                )
+              }
             />
-
             <Route
               exact
-              path='/answer/:answer_id'
-              render={(props) => 
-                <AnswerForm answer_id={props.match.params.answer_id}
-                            answermode = {"Edit"} />}
-            />
-
-            <Route
-              path='/answer/:answer_id'
-              
-              render={(routeProps) => 
-                <AnswerPage { ...this.props } { ...routeProps } 
-                answer_id={routeProps.match.params.answer_id}
-                content={routeProps}
-                question_id = {7} />}
+              path='/question/:slug/:slug/edit'
+              render={(props) =>
+                this.state.currentUser ? (
+                  <EditAnswer
+                    props={this.state}
+                    answer_id={props.location.state.answer_id}
+                    question_id={props.location.state.question_id}
+                  />
+                ) : (
+                  <Redirect to={this.props.history.goBack()} />
+                )
+              }
             />
             <Route
               exact
@@ -132,7 +128,4 @@ class App extends React.Component {
   }
 }
 
-export default inject(store => ({
-	state:store.state
-}))(observer(withRouter(App)))
-
+export default withRouter(App);

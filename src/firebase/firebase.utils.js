@@ -20,11 +20,9 @@ var db = firebase.firestore();
 export const editUser = async (uid, isAdmin) => {
   // Find the user with the given uid (props)
   const userRef = firestore.doc(`users/${uid}`);
-  console.log(userRef);
+
   try {
     if (isAdmin) {
-      console.log('is already admin');
-      console.log(userRef);
       await userRef.set(
         {
           isAdmin: false,
@@ -40,7 +38,7 @@ export const editUser = async (uid, isAdmin) => {
         },
         { merge: true }
       );
-      console.log(userRef);
+
       console.log('User has been given an admin status.');
       return true;
     }
@@ -67,63 +65,37 @@ export const showQuestionDocument = async (props) => {
   return data;
 };
 
-export const showAnswerDocument = async (props) => {
+export const showAnswerDocument = async (questionID, answerID) => {
   let data = '';
   await db
+    .collection('questions')
+    .doc(questionID)
     .collection('answers')
-    .doc(props)
+    .doc(answerID)
     .get()
     .then(async function (doc) {
       if (doc.exists) {
         data = doc.data();
-        //console.log(data);
       } else {
         console.log('No such data');
       }
     });
-  //await console.log(data);
   return data;
 };
 
-export const showAnswers = async (props) => {
-  let data = [];
-  db.collection('questions')
-    .doc(props)
-    .collection('answers')
-    .get()
-    .then(function (doc) {
-      doc.forEach((item) => {
-        getAnswerData(props, item.id).then(function (result) {
-          data.push({ answer_id: item.id, ...result });
-        });
-      });
-      //console.log(data);
-      // querySnapshot.forEach(function (doc) {
-
-      //   // doc.data() is never undefined for query doc snapshots
-      //   console.log(doc.id, ' => ', doc.data());
-      // });
-    });
-  return data;
-};
-
-export const getAnswerData = async (props, id) => {
-  let data = [];
-  await db
-    .collection('questions')
-    .doc(props)
-    .collection('answers')
-    .doc(id)
-    .get()
-    .then(function (doc) {
-      if (doc.exists) {
-        data = doc.data();
-      } else {
-        console.log('No such data');
-      }
-    });
-
-  return data;
+export const editAnswerDocument = async (questionID, answerID, body) => {
+  const userRef = firestore.doc(`questions/${questionID}/answers/${answerID}`);
+  try {
+    await userRef.set(
+      {
+        body: body,
+      },
+      { merge: true }
+    );
+    console.log('Answer updated succesfully.');
+  } catch (error) {
+    console.log('Error updating user', error.message);
+  }
 };
 
 export const showUserDocument = async (props) => {
@@ -159,27 +131,35 @@ export const findUserProfileDocument = async (email) => {
   return data;
 };
 
-export const getQuestionsAns = async (qid) => {
+export const showAnswers = async (props) => {
   let data = [];
   await firebase
     .firestore()
+    .collection('questions')
+    .doc(props)
     .collection('answers')
-    .where('questionid', '==', qid)
     .get()
     .then(function (doc) {
       doc.forEach((item) => {
-        getAnswerData2(item.id).then(function (result) {
-          data.push({ answer_id: item.id, ...result });
+        getAnswerData(props, item.id).then(function (result) {
+          data.push({ answer_id: item.id, question_id: props, ...result });
         });
       });
-    });
+      //console.log(data);
+      // querySnapshot.forEach(function (doc) {
 
+      //   // doc.data() is never undefined for query doc snapshots
+      //   console.log(doc.id, ' => ', doc.data());
+      // });
+    });
   return data;
 };
 
-export const getAnswerData2 = async (id) => {
+export const getAnswerData = async (props, id) => {
   let data = [];
   await db
+    .collection('questions')
+    .doc(props)
     .collection('answers')
     .doc(id)
     .get()

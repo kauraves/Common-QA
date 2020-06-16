@@ -1,3 +1,7 @@
+button.btn.btn-light {
+  border: 1px solid lightgrey;
+}
+
 .App {
   text-align: center;
 }

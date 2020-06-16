@@ -4,11 +4,11 @@ import {
   showUserDocument,
   editUser,
 } from '../../firebase/firebase.utils';
-import Container from 'react-bootstrap/Container'
-import Form from 'react-bootstrap/Form'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 //import './edit-users.styles.css';
 
 class EditUsers extends React.Component {
@@ -38,7 +38,7 @@ class EditUsers extends React.Component {
       console.log('Nothing to see in here');
     }
 
-    await console.log('Found user: ', this.state.userData);
+    await console.log('DEMO: Found user: ', this.state.userData);
   };
 
   changeAdminStatus = async (e) => {
@@ -83,39 +83,38 @@ class EditUsers extends React.Component {
     // {this.state.statusFound ? {this.state.userData.isAdmin ? 'admin' : 'user'} : null}
 
     return (
-      <Container className='edit-users' >
+      <Container className='edit-users'>
         <Row>
           <h3>Edit users</h3>
         </Row>
         <Form
-        className='edit-users-form'
-        onSubmit={(e) => this.findUser(e, true)} >
-          <Form.Group as={Row} className="align-items-center">
-            <Col md="3">
-              <Form.Control as='input'
+          className='edit-users-form'
+          onSubmit={(e) => this.findUser(e, true)}>
+          <Form.Group as={Row} className='align-items-center'>
+            <Col md='3'>
+              <Form.Control
+                as='input'
                 type='text'
                 name='userEmail'
-                placeholder="user@email.com"
+                placeholder='user@email.com'
                 value={this.state.userEmail}
                 onChange={this.handleChange}
                 label='email'
-                required>
-              </Form.Control>
+                required></Form.Control>
             </Col>
-            <Button type='submit'>Find user by email</Button>
+            <Button variant='light' type='submit'>Find user by email</Button>
           </Form.Group>
 
-          <Form.Group as={Row} className="align-items-center">
-
+          <Form.Group as={Row} className='align-items-center'>
             {this.state.userData.email
-            ? this.getUserData(this.state.userData)
-            : null}
-            
-            <Col md="3" >
-                <Form.Control readOnly placeholder={status} />
+              ? this.getUserData(this.state.userData)
+              : null}
+
+            <Col md='3'>
+              <Form.Control readOnly placeholder={status} />
             </Col>
 
-            <Button onClick={this.changeAdminStatus}>
+            <Button variant='light' onClick={this.changeAdminStatus}>
               Change USERS ADMIN status
             </Button>
           </Form.Group>
