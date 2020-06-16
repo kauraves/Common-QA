@@ -6,6 +6,9 @@ import {
 import { getDateAndTime } from '../../functions';
 import AnswerList from '../answers/answer-list.component';
 import { sleep } from '../../functions';
+import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 class Question extends React.Component {
   constructor(props) {
@@ -22,6 +25,7 @@ class Question extends React.Component {
     await sleep(200);
 
     await this.setState({ answerData: data });
+    console.log("answerData: " + data);
   };
 
   getQuestion = async (id) => {
@@ -46,16 +50,30 @@ class Question extends React.Component {
             Question asked by {this.state.data.author_name} at{' '}
             {this.state.data.created_at}
           </p>
+          {(this.props.author_id !== "") ? (
+            <Link
+              to={{
+                pathname: `${this.props.location.pathname}/add`,
+                state: {
+                  answer_id: "",
+                  question_id: this.props.id,
+                  answermode: "Add"
+                },
+              }}>
+              Add
+            </Link>
+          ) : null}
           <br></br>
         </div>
         <AnswerList
           answers={this.state.answerData}
           question_id={this.props.id}
           isAdmin={this.props.isAdmin}
+          author_id = {this.props.author_id}
         />
       </div>
     );
   }
 }
 
-export default Question;
+export default withRouter(Question);

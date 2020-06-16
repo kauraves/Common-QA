@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 
 import Button from 'react-bootstrap/Button';
 import { withRouter } from 'react-router';
+import {observer,inject} from 'mobx-react';
 
 import {
   showAnswerDocument,
@@ -17,6 +18,7 @@ class EditAnswer extends React.Component {
 
     this.state = {
       editBody: '',
+      headerText: this.props.answermode == "Edit" ? "Edit answer": "Add answer",
     };
   }
 
@@ -36,7 +38,11 @@ class EditAnswer extends React.Component {
   };
 
   componentDidMount() {
-    this.getAnswer();
+    if (this.props.answermode == "Edit") {
+      this.getAnswer();
+    } else {
+
+    }
   }
 
   onChange = (event) => {
@@ -68,8 +74,9 @@ class EditAnswer extends React.Component {
   render() {
     return (
       <Container>
+        Testiä........................
         <Form onSubmit={this.submit}>
-          <h2>Edit answer</h2>
+          <h2>{this.state.headerText}</h2>
           <Form.Control
             as='textarea'
             type='text'
@@ -88,4 +95,7 @@ class EditAnswer extends React.Component {
   }
 }
 
-export default withRouter(EditAnswer);
+//export default withRouter(EditAnswer);
+export default inject(store => ({
+	state:store.state
+}))(observer(withRouter(EditAnswer)))

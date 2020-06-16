@@ -10,6 +10,7 @@ import ProfilePage from './pages/profile/profile.component';
 import AdminPage from './pages/admin/adminpage.component';
 import QuestionPage from './pages/question/questionpage.component';
 import EditAnswer from './components/answers/edit-answer.component';
+import {observer,inject} from 'mobx-react';
 
 class App extends React.Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class App extends React.Component {
               ...snapShot.data(),
             },
           });
-
+          this.props.state.currentUser = this.state.currentUser;
+          this.props.state.currentUser.id = this.state.currentUser.id.trim();
           console.log('DEMO: Current user:', this.state.currentUser);
         });
       } else {
@@ -89,9 +91,13 @@ class App extends React.Component {
                   <QuestionPage
                     content={props}
                     isAdmin={this.state.currentUser.isAdmin}
+                    author_id = {this.state.currentUser.id}
                   />
                 ) : (
-                  <QuestionPage content={props} isAdmin={false} />
+                  <QuestionPage 
+                    content={props} 
+                    isAdmin={false}
+                    author_id = {""} />
                 )
               }
             />
@@ -102,6 +108,7 @@ class App extends React.Component {
                 this.state.currentUser ? (
                   <EditAnswer
                     props={this.state}
+                    answermode = {props.location.state.answermode}
                     answer_id={props.location.state.answer_id}
                     question_id={props.location.state.question_id}
                   />
@@ -128,4 +135,7 @@ class App extends React.Component {
   }
 }
 
-export default withRouter(App);
+//export default withRouter(App);
+export default inject(store => ({
+	state:store.state
+}))(observer(withRouter(App)))

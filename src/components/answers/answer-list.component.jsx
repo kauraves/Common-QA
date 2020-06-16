@@ -10,7 +10,7 @@ class AnswerList extends Component {
     super(props);
 
     this.state = {
-      answers: [],
+      answers: [], 
     };
   }
 
@@ -33,6 +33,7 @@ class AnswerList extends Component {
   }
 
   render() {
+
     let answerItems = this.props.answers.map((answer, index) => (
       <tr key={index}>
         <td>
@@ -51,13 +52,14 @@ class AnswerList extends Component {
             Answered by: {answer.author_name} at{' '}
             {getDateAndTime(answer.created_at.seconds)}{' '}
           </p>
-          {this.props.isAdmin ? (
+          {((answer.author_id.trim()).toLowerCase() === "dZ7pBmrhHqdQtW54HrKQxz9PmIL2".toLowerCase()) ? (
             <Link
               to={{
                 pathname: `${this.props.location.pathname}/${answer.answer_id}/edit`,
                 state: {
                   answer_id: answer.answer_id,
                   question_id: answer.question_id,
+                  answermode: "Edit"
                 },
               }}>
               <Button variant='light'>Edit</Button>

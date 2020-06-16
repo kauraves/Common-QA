@@ -6,6 +6,7 @@ const QuestionPage = (props) => (
     <Question
       id={props.content.match.params.slug}
       isAdmin={props.isAdmin}
+      author_id = {props.author_id}
       aid={props.content.match.params.aid}
     />
   </div>
