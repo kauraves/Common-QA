@@ -9,7 +9,6 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-//import './edit-users.styles.css';
 
 class EditUsers extends React.Component {
   constructor() {
@@ -56,19 +55,6 @@ class EditUsers extends React.Component {
     this.setState({ [name]: value });
   };
 
-  getUserData = (data) => {
-    //data = this.state.userData;
-    //console.log(data);
-    // Object.keys(data).map((item) => {
-    //   return <div>This is: {item}</div>;
-    // });
-    //return <div>Object.keys(data).map((item) => {console.log(item)});</div>;
-    // data.map((item, i) => {
-    //   console.log('data added', i);
-    //   return <div key={i} answer={item} />;
-    // });
-  };
-
   render() {
     let status = '';
     if (this.state.statusFound) {
@@ -79,8 +65,6 @@ class EditUsers extends React.Component {
         status += 'a subscriber';
       }
     }
-
-    // {this.state.statusFound ? {this.state.userData.isAdmin ? 'admin' : 'user'} : null}
 
     return (
       <Container className='edit-users'>
@@ -102,14 +86,12 @@ class EditUsers extends React.Component {
                 label='email'
                 required></Form.Control>
             </Col>
-            <Button variant='light' type='submit'>Find user by email</Button>
+            <Button variant='light' type='submit'>
+              Find user by email
+            </Button>
           </Form.Group>
 
           <Form.Group as={Row} className='align-items-center'>
-            {this.state.userData.email
-              ? this.getUserData(this.state.userData)
-              : null}
-
             <Col md='3'>
               <Form.Control readOnly placeholder={status} />
             </Col>

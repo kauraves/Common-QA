@@ -25,7 +25,6 @@ class QuestionSummary extends React.Component {
   };
 
   render() {
-    //console.log('State in render for data:', this.state.data);
     const questionItems = this.state.data.map((questionItem, index) => (
       <tr key={index}>
         <td>
@@ -63,13 +62,3 @@ class QuestionSummary extends React.Component {
 }
 
 export default QuestionSummary;
-
-// <div>
-// <h4
-//   className='questionTitle'
-//   id={this.props.questionID}
-//   onClick={() => this.props.goToQuestion(this.props.questionID)}>
-//   {this.props.question}
-// </h4>
-// <p className='textBlock'>{this.props.textBlock}</p>
-// </div>

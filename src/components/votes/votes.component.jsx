@@ -12,7 +12,7 @@ class Votes extends React.Component {
         <Button
           variant='success'
           onClick={() => this.props.upvoteQuestion(this.props.questionID)}>
-          {this.props.question}>upvote
+          {this.props.question}upvote
         </Button>
         <p>{this.props.votes}</p>
         <Button

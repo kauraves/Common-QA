@@ -10,7 +10,6 @@ class AnswerList extends Component {
     super(props);
 
     this.state = {
-      // hasAnswers: false,
       answers: [],
     };
   }
@@ -63,9 +62,7 @@ class AnswerList extends Component {
               }}>
               <Button variant='light'>Edit</Button>
             </Link>
-          ) : (
-            'hi'
-          )}
+          ) : null}
         </td>
       </tr>
     ));
