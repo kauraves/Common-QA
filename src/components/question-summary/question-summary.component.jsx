@@ -2,7 +2,7 @@ import React from 'react';
 import { getAllQuestions } from '../../firebase/firebase.utils';
 import { Link } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
-import { getDateAndTime } from '../../functions';
+import { getDateAndTime, sleep } from '../../functions';
 
 class QuestionSummary extends React.Component {
   constructor(props) {
@@ -17,33 +17,12 @@ class QuestionSummary extends React.Component {
     this.getQuestions();
   }
 
-  sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
   getQuestions = async () => {
     let data = await getAllQuestions();
-    await this.sleep(200);
+    await sleep(200);
 
     await this.setState({ data: data });
   };
-
-  // getDateAndTime(seconds) {
-  //   let ParsedDate = new Date(seconds * 1000);
-  //   ParsedDate =
-  //     ParsedDate.getDate() +
-  //     '.' +
-  //     (ParsedDate.getMonth() + 1) +
-  //     '.' +
-  //     ParsedDate.getFullYear() +
-  //     ' : ' +
-  //     ParsedDate.getHours() +
-  //     ':' +
-  //     ParsedDate.getMinutes() +
-  //     ':' +
-  //     ParsedDate.getSeconds();
-  //   return ParsedDate;
-  // }
 
   render() {
     //console.log('State in render for data:', this.state.data);
@@ -62,7 +41,7 @@ class QuestionSummary extends React.Component {
               {questionItem.title}
             </Link>
           </h4>
-          <p>{questionItem.body.substr(1, 250)}</p>
+          <p>{questionItem.body.substr(0, 249)}</p>
         </td>
       </tr>
     ));
