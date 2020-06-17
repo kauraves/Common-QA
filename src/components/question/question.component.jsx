@@ -40,6 +40,12 @@ class Question extends React.Component {
     this.getAllAnswers(this.props.id);
   }
 
+  addAnswer() {
+
+    console.log("Add answer: " + `${this.props.location.pathname}/add`);
+    this.props.history.push("/question/"+ this.props.id + "/add");
+  }
+
   render() {
     return (
       <div className='container-fluid'>
@@ -51,17 +57,11 @@ class Question extends React.Component {
             {this.state.data.created_at}
           </p>
           {(this.props.author_id !== "") ? (
-            <Link
-              to={{
-                pathname: `${this.props.location.pathname}/add`,
-                state: {
-                  answer_id: "",
-                  question_id: this.props.id,
-                  answermode: "Add"
-                },
-              }}>
-              Add
-            </Link>
+            
+              <Button variant='light'
+                onClick={() => this.addAnswer()}
+              >Add answer</Button>
+            
           ) : null}
           <br></br>
         </div>

@@ -236,6 +236,38 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
+export const createAnswerDocument = async (questionID, answer, additionalData) => {
+  if (!answer) return;
+
+  // This gives us also exists property that tells us whether the record exists in the database or not
+  //const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const userRef = firestore.doc(`questions/${questionID}/answers/${answer.uid}`);
+  const snapShot = await userRef.get();
+  
+  // create new answer
+  if (!snapShot.exists) {
+    const author_id = answer.author_id;
+    const created_at = new Date();
+    const votes = 0;
+    const author_name = answer.author_name;
+    const body = answer.body;
+
+    try {
+      await userRef.set({
+        author_id,
+        created_at,
+        body,
+        author_name,
+        marked_as_best: false,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.log('Error creating answer', error.message);
+    }
+  }
+  return userRef;
+};
+
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 

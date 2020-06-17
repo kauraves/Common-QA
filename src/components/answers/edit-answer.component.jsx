@@ -4,23 +4,48 @@ import Form from 'react-bootstrap/Form';
 
 import Button from 'react-bootstrap/Button';
 import { withRouter } from 'react-router';
-import {observer,inject} from 'mobx-react';
-
+//import {observer,inject} from 'mobx-react';
 import {
   showAnswerDocument,
+  showQuestionDocument,
   editAnswerDocument,
+  createAnswerDocument,
 } from '../../firebase/firebase.utils';
 import { getDateAndTime, sleep } from '../../functions';
+import { v4 as uuidv4 } from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 
 class EditAnswer extends React.Component {
   constructor(props) {
     super(props);
+    
+    
 
     this.state = {
+      uid: "",
+      questionData: '',
+      data: '',
       editBody: '',
       headerText: this.props.answermode == "Edit" ? "Edit answer": "Add answer",
     };
   }
+
+  createGUID = () => {
+    const letters = "ABCDEFGHIJKLMNOPabcdefghijklmnop0123456789"
+    let token = ""
+    for(let i=0;i<12;i++) {
+      let temp = Math.floor(Math.random()*letters.length)
+      token = token + letters[temp];
+    }
+    return token;
+  }
+
+  getQuestion = async (id) => {
+    let data = await showQuestionDocument(id);
+    let newDate = await getDateAndTime(data.created_at.seconds);
+    await this.setState({ questionData: { ...data, created_at: newDate } });
+    await sleep(500);
+  };
 
   getAnswer = async () => {
     // Change this to .then() instead of await
@@ -38,25 +63,44 @@ class EditAnswer extends React.Component {
   };
 
   componentDidMount() {
+    this.getQuestion(this.props.question_id);
     if (this.props.answermode == "Edit") {
       this.getAnswer();
     } else {
-
+      let uid = this.createGUID();
+      this.setState({uid: uid});
     }
   }
 
   onChange = (event) => {
     const { value } = event.target;
     this.setState({ editBody: value });
+    //let uid = uuidv4();
+    //  console.log("UID: " + uid);
   };
 
   onSubmit = (event) => {
     event.preventDefault();
+    if (this.props.answermode == "Edit") {
     editAnswerDocument(
       this.props.question_id,
       this.props.answer_id,
       this.state.editBody
     );
+    } else {
+
+      let answer = {
+        uid: this.state.uid,
+        author_id: this.props.author_id,
+        author_name: this.props.author_name,
+        body: this.state.editBody
+      }
+      let uid = uuidv4();
+      console.log("UID: " + uid);
+      createAnswerDocument(this.props.question_id, answer);
+    }
+    
+
     console.log('Data changed');
     this.props.history.goBack();
   };
@@ -74,8 +118,9 @@ class EditAnswer extends React.Component {
   render() {
     return (
       <Container>
-        Testiä........................
         <Form onSubmit={this.submit}>
+          <h1>{this.state.questionData.title}</h1>
+          <p className='textBlock'>{this.state.questionData.body}</p>
           <h2>{this.state.headerText}</h2>
           <Form.Control
             as='textarea'
@@ -95,7 +140,8 @@ class EditAnswer extends React.Component {
   }
 }
 
-//export default withRouter(EditAnswer);
-export default inject(store => ({
+export default withRouter(EditAnswer);
+/*export default inject(store => ({
 	state:store.state
 }))(observer(withRouter(EditAnswer)))
+*/

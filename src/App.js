@@ -90,6 +90,7 @@ class App extends React.Component {
                 this.state.currentUser ? (
                   <QuestionPage
                     content={props}
+                    
                     isAdmin={this.state.currentUser.isAdmin}
                     author_id = {this.state.currentUser.id}
                   />
@@ -101,6 +102,7 @@ class App extends React.Component {
                 )
               }
             />
+            
             <Route
               exact
               path='/question/:slug/:slug/edit'
@@ -108,12 +110,31 @@ class App extends React.Component {
                 this.state.currentUser ? (
                   <EditAnswer
                     props={this.state}
-                    answermode = {props.location.state.answermode}
+                    answermode = {"Edit"}
                     answer_id={props.location.state.answer_id}
                     question_id={props.location.state.question_id}
+                    author_id = {this.state.currentUser.id}
                   />
                 ) : (
                   <Redirect to={this.props.history.goBack()} />
+                )
+              }
+            />
+            <Route
+              exact
+              path='/question/:questionid/add'
+              render={(props) =>
+                this.state.currentUser ? (
+                  <EditAnswer
+                    props={this.state}
+                    answermode = {"Add"}
+                    answer_id= {""}
+                    question_id={props.match.params.questionid}
+                    author_id = {this.state.currentUser.id}
+                    author_name = {this.state.currentUser.displayName}
+                  />
+                ) : (
+                  <Redirect to='/' />
                 )
               }
             />

@@ -52,7 +52,7 @@ class AnswerList extends Component {
             Answered by: {answer.author_name} at{' '}
             {getDateAndTime(answer.created_at.seconds)}{' '}
           </p>
-          {((answer.author_id.trim()).toLowerCase() === "dZ7pBmrhHqdQtW54HrKQxz9PmIL2".toLowerCase()) ? (
+          {((answer.author_id.trim()).toLowerCase() === this.props.author_id.toLowerCase()) ? (
             <Link
               to={{
                 pathname: `${this.props.location.pathname}/${answer.answer_id}/edit`,
